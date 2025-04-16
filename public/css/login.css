@@ -1,0 +1,99 @@
+@import "variables.css";
+body
+{
+    margin: 0;
+    font-family: 'Poppins', sans-serif !important;
+
+}
+
+.gradient-custom,body {
+    /* fallback for old browsers */
+    /*background: #6a11cb;*/
+
+
+    /*!* Chrome 10-25, Safari 5.1-6 *!*/
+    /*background: -webkit-linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));*/
+
+    /*!* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ *!*/
+    /*background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));*/
+    background: url('3434545345.webp');
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    height: 100vh;
+}
+
+.social
+{
+    width: 36px;
+}
+
+.forgot
+{
+    font-weight: 440;
+    text-decoration: none;
+}
+
+.linkedin
+{
+    width: 52px
+}
+
+
+input[type=text],input[type=email],input[type=password],input[type=password], myInput
+{
+    box-sizing: border-box;
+    outline: none !important;
+    border: none;
+    border-bottom: 2px solid white;
+    background: transparent !important;
+    border-radius: 0px !important;
+    color:white !important;
+    background: none !important;
+    display: block;
+    margin: 0 auto;
+    transition: width 1s;
+    padding: 0 !important;
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 14px !important;
+}
+
+.toggleSwitch
+{
+    background-color: transparent;
+    outline: none;
+    border: none;
+    color:white !important;
+    border-bottom: 2px solid white;
+    border-radius: 0px !important;
+}
+
+input::placeholder {
+    color: white !important;
+    opacity: 0.45;
+    font-size: 16px;
+    text-align: left;
+}
+
+*:focus {
+    outline: none !important;
+}
+
+.bg-dark-alt
+{
+    background-color: var(--login-pane) !important;
+}
+
+.round-btn
+{
+        background-color: var(--primart-btn);
+    width: 200px;
+    border-radius: 15px ;
+}
+
+.fa
+{
+    font-size:17px
+}

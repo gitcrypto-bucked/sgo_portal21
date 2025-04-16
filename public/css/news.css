@@ -1,0 +1,152 @@
+@import url('https://fonts.cdnfonts.com/css/poppins');
+
+u,u:hover,u:focus,u:active
+{
+    font-family: 'Poppins', sans-serif;
+    text-decoration: none !important;
+    color: #bdc2c7;
+    font-size: 12px !important;
+}
+
+.link, .link:hover, .link:visited
+{
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 12px !important;
+    color:#2079fe !important;
+    font-weight: 550;
+    text-decoration: underline !important;
+    line-height: 0 !important;
+    cursor: pointer !important;
+}
+
+.newsHeader
+{
+    font-family: 'Poppins', sans-serif !important;
+    color:rgba(0, 0, 0, 0.7323);
+    font-size: 13px !important;
+    text-decoration: underline transparent !important;
+}
+
+.newsText
+{
+    font-family: 'Poppins', sans-serif !important;
+    color:dimgray;
+    font-size: 12px !important;
+    text-decoration: underline transparent !important;
+    line-height: 1 !important;
+    margin-top:-1px !important;
+}
+
+.newsDate
+{
+    font-family: 'Poppins', sans-serif !important;
+    color:#94a1a6;
+    font-size: 10px !important;
+    font-weight: 450;
+}
+
+.right-bck{
+    background-color: transparent;
+}
+.registration-right{
+    width: 80%;
+    padding-top: 50px;
+    padding-bottom: 50px
+}
+.registration-right h2{
+    color: #ffffff;
+    font-weight: 700;
+    padding-bottom: 20px
+}
+.registration .btn{
+    width: 100%
+}
+
+.event-list .card{
+    background-color: transparent;
+    padding: 18px;
+    margin-bottom: 3px;
+    border:0px !important;
+}
+.event-list img{
+    width: 77px;
+    height: 77px
+}
+.event-list h4{
+    color: #c0bfc9;
+    font-size: 16px
+}
+.event-list .card-title span{
+    padding-left: 5px;
+    padding-right: 20px;
+    font-size: 12px;
+    font-weight: 700
+}
+.event-list .card-text{
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 16px
+}
+.event-list .card-body{
+    padding: 0 20px;
+    margin: 0 0 10px 0
+}
+.event-list .card-title svg{
+    color: #ffffff
+}
+
+.img-fluid
+{
+    width: 120px !important;
+    height: 95px !important;
+}
+
+
+
+@media (min-width: 768px) and (max-width: 991px) {
+/** tablet , rotate mobile **/
+    .img-fluid
+    {
+        width: 120px !important;
+    }
+
+    .registration-right
+    {
+        width: 100%; !important;
+    }
+}
+
+
+@media (max-width: 767px) {
+/** MOBILE  SMARTPHONE **/
+   .registration-right
+   {
+        width: 100%; !important;
+   }
+    /*.card-title*/
+    /*{*/
+    /*    margin-right: -7vw !important;*/
+    /*}*/
+
+    /*.newsText*/
+    /*{*/
+    /*    margin-right: -9vw !important;*/
+    /*}*/
+
+    /*.link*/
+    /*{*/
+    /*    margin-right: -4vw !important;*/
+    /*}*/
+
+
+
+}
+
+
+.btn_link, .btn_link:hover, .btn_link:active
+{
+    border: none !important;
+    outline: none !important;
+    background-color: transparent !important;
+}
+

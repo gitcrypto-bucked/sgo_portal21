@@ -1,0 +1,177 @@
+@import url('https://fonts.cdnfonts.com/css/poppins');
+
+.column_name
+{
+    background-color:  #E7E7E7;!important;
+    color: black !important;
+    text-transform: uppercase;
+    width: 100% !important;
+    height: 35px !important;
+    padding: 5px !important;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px;
+    box-shadow: 2px 2px transparent;
+    font-family: 'Poppins', sans-serif !important;
+
+}
+
+#postado, #transporte, #entregue
+{
+    background-color: white !important;
+    border-radius: 8px !important;
+    box-shadow: 1px 1px lightgrey;
+    width:  100% !important;
+    height: auto !important;
+    padding: 12px ;
+    font-family: 'Poppins', sans-serif !important;
+}
+
+
+
+.column_content
+{
+    background-color: #E7E7E7;
+    border-radius: 5px !important;
+    list-style: none;
+    width: 100%;
+    font-family: 'Poppins', sans-serif !important;
+
+}
+
+tr, td
+{
+    background-color: #E7E7E7;
+
+}
+
+ul
+{
+    margin-bottom: 16px;
+}
+
+li
+{
+    line-height: 1;
+}
+
+
+
+.li_text
+{
+    padding-top:16px;
+    text-align: center;
+    font-family: 'Poppins', sans-serif !important;
+
+}
+
+.li_normal
+{
+    margin-top: -2px !important;
+    display:block;
+    font-family: 'Poppins', sans-serif !important;
+
+}
+
+.li_normal_end
+{
+    margin-top: -2px !important;
+    display:block;
+    padding-bottom: 18px ;
+    font-family: 'Poppins', sans-serif !important;
+
+}
+
+.dot_postado {
+    height: 24px;
+    width: 24px;
+    background-color:#fad02c;
+    border-radius: 50%;
+    margin-left: -10px;
+    margin-top:16px;
+    position: absolute;
+    display: block;
+
+}
+
+.dot_cancelado {
+    height: 24px;
+    width: 24px;
+    background-color:#db1f48;
+    border-radius: 50%;
+    margin-left: -10px;
+    margin-top:16px;
+    position: absolute;
+    display: block;
+
+}
+
+.dot_transporte
+{
+    height: 24px;
+    width: 24px;
+    background-color:#fad02c;
+    border-radius: 50%;
+    margin-left: -10px;
+    margin-top:16px;
+    position: absolute;
+    display: block;
+}
+
+.dot_entregue
+{
+    height: 24px;
+    width:24px;
+    background-color:#18a558;
+    border-radius: 50%;
+    margin-left: -10px;
+    margin-top:16px;
+    position: absolute;
+    display: block;
+}
+
+
+.details_header
+{
+    background-color: #ECECEC;
+    height: 50px;
+    padding: 15px;
+    font-size: 15px !important;
+}
+
+strong
+{
+    font-family: 'Poppins', sans-serif !important;
+    color: #3B454F;
+    font-size: 15px !important;
+}
+
+
+
+.strong_status
+{
+    font-family: 'Poppins', sans-serif !important;
+    color: #046B34 !important;
+    font-weight: 770 !important;
+    font-size: 15px !important;
+}
+
+.strong_details
+{
+    font-family: 'Poppins', sans-serif !important;
+    color: black !important;
+    font-weight:    660 !important;
+    font-size: 18px !important;
+}
+
+.borderless table {
+    border-top-style: none;
+    border-left-style: none;
+    border-right-style: none;
+    border-bottom-style: none;
+    background-color: transparent; !important;
+}
+
+

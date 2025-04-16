@@ -1,0 +1,304 @@
+@import url('https://fonts.cdnfonts.com/css/poppins');
+.card
+{
+    border: none !important;
+    border-radius: 15px !important;
+    -moz-box-shadow: 0 4px 4px rgba(123, 121, 121, 0.4) !important;
+    -webkit-box-shadow: 0 4px 4px rgba(123, 121, 121, 0.4) !important;
+    box-shadow: 0 4px 4px rgba(123, 121, 121, 0.4) !important;
+    outline: none !important;
+}
+
+.card-header
+{
+    border:none !important;
+    cursor: pointer !important;
+}
+
+.abbr_title
+{
+    -webkit-text-decoration: none !important;
+    text-decoration:none !important;
+    font-family: 'Poppins', sans-serif !important;
+    font-size: 15px !important;
+    color: #666 !important;
+    font-weight: 394 !important;
+    text-underline: none !important;
+    outline: none !important;
+    cursor: pointer !important;
+}
+
+.initialism
+{   -webkit-text-decoration: none !important;
+    text-decoration:none !important;
+    font-family: 'Poppins', sans-serif !important;
+    cursor: pointer !important;
+}
+
+.initialism_alt
+{
+    -webkit-text-decoration: none !important;
+    text-decoration:none !important;
+    font-family: 'Poppins', sans-serif !important;
+    cursor: pointer !important;
+    text-transform:  none !important;
+    font-weight: 550 !important;
+    font-size: 14px !important;
+}
+
+
+.p1 {
+    margin-top: 0px !important;
+    margin-bottom: 1px !important;
+    padding-left:5px !important;
+}
+
+.empty
+{
+    width: 100px !important;
+}
+
+
+.empty2
+{
+    width: 120px !important;
+}
+
+.user_id
+{
+    width: 3vw !important;
+}
+
+.user
+{
+    width: 12vw !important;
+}
+
+
+.round-btn
+{
+    width: 200px !important;
+    border-radius: 15px !important;
+}
+
+
+.float-container {
+}
+.float-child {
+    width: 30%;
+    float: left;
+    padding: 5px;
+}
+
+
+.float-child_alt {
+    width: 20%;
+    float: left;
+    padding: 5px;
+}
+
+
+.table_list
+{
+}
+
+
+.float-child_invent
+{
+    float: left;
+    padding: 5px !important;
+    width: 25% !important;
+}
+
+
+.float-child_invent_localidade
+{
+    float: left;
+    padding: 5px !important;
+    width: 44% !important;
+    text-align: center;
+}
+
+
+
+.float-child_invent_qtde
+{
+    float: right;
+    padding: 5px !important;
+    text-align: center;
+}
+
+
+.text-secondary
+{
+    font-size: 12px ;
+    font-family: 'Poppins', sans-serif !important;
+    word-break: keep-all;
+    padding: 1px !important;
+}
+
+.float-child_invoice
+{
+    float: left;
+    padding: 5px !important;
+    width: 26% !important;
+}
+
+
+.float-child_invoice_valor
+{
+    float: left;
+    padding: 5px !important;
+    width: 18% !important;
+}
+
+.float-child_invoice_periodo
+{
+    float: left;
+    padding: 5px !important;
+    width: 15% !important;
+}
+
+.float-child_invoice_serial
+{
+    float: left;
+    padding: 5px !important;
+    width: 11% !important;
+}
+
+.float-child_invoice_cdc
+{
+    float: left;
+    padding: 5px !important;
+    width: 10% !important;
+}
+
+.float-child_invoice_details
+{
+    float: left;
+    padding: 5px !important;
+    width: 8% !important;
+}
+
+.float-child_invoice_chamados
+{
+    float: left;
+    padding: 5px !important;
+    width: 13% !important;
+}
+
+.float-child_invoice_chamados_first
+{
+    float: left;
+    padding: 5px !important;
+    padding-left: 20px !important;
+
+}
+
+.float-child_invoice_rating
+{
+    float: left;
+    padding: 5px !important;
+    width: 15.2% !important;
+}
+
+
+.float-child_invoice_eye
+{
+    float: left;
+    padding: 5px !important;
+    width: 3% !important;
+}
+
+.float-child_invoice_servico
+{
+    float: left;
+    padding: 5px !important;
+    width: 20% !important;
+}
+
+.status_aberto
+{
+    float: right;
+    background-color: #A0A32D!important;
+    border: none;
+    color: white;
+    padding: 6px 66px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 25px !important;
+    display: inline-block;
+    font-size: 14px;
+    margin: 2px 1px;
+    cursor: pointer;
+}
+
+.modelo
+{
+    font-weight: 550;
+    font-size: 13.5px !important;
+}
+
+.serial
+{
+    font-size: 13.5px !important;
+}
+
+.tdr
+{
+    padding:3px !important
+}
+
+.tdlr
+{
+    padding-right: 15px !important;
+}
+
+.small-text, .small-text:hover
+{
+    font-size: 12px !important;
+    background-color: #00AAFF;
+    color:white !important;
+}
+
+.btn-nav
+{
+    border: 1px solid black !important;
+    border-radius: 0px !important;
+    font-weight: 440 !important;
+    font-weight: 440 !important;
+    margin-right: 2px !important;
+    color: black !important;
+}
+
+
+
+
+@media (max-width: 767px) {
+    /** MOBILE  SMARTPHONE **/
+    .float-child_invoice_chamados_first, .
+    {
+         display: flex;
+         justify-content: space-between;
+        width: 25% ;
+     }
+
+    .float-child_invoice_chamados
+    {
+        width: 21% !important;
+    }
+
+    .float-child_invoice_eye
+    {
+        float: left;
+        padding: 5px !important;
+        width: 3% !important;
+    }
+
+}
+
+
+@media (min-width: 768px) and (max-width: 991px) {
+/** tablet , rotate mobile **/
+
+}

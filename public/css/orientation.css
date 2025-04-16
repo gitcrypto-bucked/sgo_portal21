@@ -1,0 +1,21 @@
+
+@media screen and (orientation:landscape) {
+    .logo-header .logo {
+        opacity: 1;
+        position: relative;
+        width:10.341907824222937vw !important;
+        display: flex;
+        align-items: center;
+        top:-8px;
+    }
+}
+
+
+.dropdown:hover>.dropdown-menu {
+    display: block;
+}
+
+.dropdown>.dropdown-toggle:active {
+    /*Without this, clicking will make it sticky*/
+    pointer-events: none;
+}

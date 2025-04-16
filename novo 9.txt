@@ -1,0 +1,62 @@
+SELECT 
+	nfe_rastreamento,
+  descricao_status_rastreamento,
+  data_entrega_rastreamento,
+  previsao_entrega_rastreamento,
+  data_faturamento_rastreamento
+FROM 
+sgo_rastreamento r
+INNER JOIN sgo_equipamento e ON r.id_equipamento = e.id_equipamento AND  r.id_localidade = e.id_localidade
+INNER JOIN sgo_localidade l ON l.id_localidade = r.id_localidade
+INNER JOIN sgo_cliente c ON c.id_cliente = l.id_cliente
+WHERE c.id_cliente=2415
+GROUP BY r.nfe_rastreamento, r.descricao_status_rastreamento, 
+r.data_entrega_rastreamento, r.data_faturamento_rastreamento, r.previsao_entrega_rastreamento;
+
+
+SELECT status_rastreamento, descricao_status_rastreamento FROM sgo_rastreamento 
+GROUP BY status_rastreamento, descricao_status_rastreamento;
+
+
+
+
+
+
+SELECT  nfe_rastreamento, 
+				data_faturamento_rastreamento,
+				data_entrega_rastreamento,
+        descricao_status_rastreamento,
+        descricao_produto_rastreamento,
+        codigo_produto_rastreamento,
+        codigo_rastreamento,
+        responsavel_rastreamento,
+        endereco_entrega_rastreamento,
+        numero_entrega_rastreamento,
+        bairro_entrega_rastreamento,
+        cep_entrega_rastreamento,
+        cidade_entrega_rastreamento,
+        estado_entrega_rastreamento,
+        l.nome_localidade,
+        SUM(quantidade_rastreamento) AS quantidade_rastreamento
+				
+FROM
+sgo_rastreamento r
+INNER JOIN sgo_localidade l ON l.id_localidade = r.id_localidade
+WHERE nfe_rastreamento = 240667
+GROUP BY r.nfe_rastreamento, 
+				r.data_faturamento_rastreamento,
+				r.data_entrega_rastreamento,
+        r.descricao_status_rastreamento,
+        r.descricao_produto_rastreamento,
+        r.codigo_produto_rastreamento,
+        r.codigo_rastreamento,
+        r.responsavel_rastreamento,
+        r.endereco_entrega_rastreamento,
+        r.numero_entrega_rastreamento,
+        r.bairro_entrega_rastreamento,
+        r.cep_entrega_rastreamento,
+        r.cidade_entrega_rastreamento,
+        r.estado_entrega_rastreamento,
+        l.nome_localidade
+
+

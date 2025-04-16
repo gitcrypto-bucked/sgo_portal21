@@ -1,0 +1,18 @@
+:root {
+    --primary-color: #509896;
+    --secondary-color:#e9ecec;
+    --nav-color: #d7d9d9;
+    --body-color: #f2f5f8;
+    --text-color: #FFF;
+    --h2-color:#046b34;
+    --label-color:#3b454f;
+    --primart-btn: #629a7c;
+    --login-pane:#000000;
+    --accordion-active-bg: #98d7c2!important;
+    --accordion-sidebar-bg:transparent !important;
+    --accordion-sidebar-color:#f2f5f8 !important;
+    --input-file:#e3f2f7 !important;
+    --button-form: #629a7c !important;
+    --container-chamados: #E7E7E7 !important;
+
+}
