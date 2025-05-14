@@ -7,7 +7,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
 use PHPMailer\PHPMailer\PHPMailer;
-set_time_limit ( 0 );
+ini_set('memory_limit', '-1');
+set_time_limit(0);
+
 class SendUserEmail
 {
     /**
@@ -177,6 +179,7 @@ class SendUserEmail
         $mail->Subject = 'Cadastro de usuarios';
         $mail->Body = $message;
         $mail->IsHTML(true);
+        dd($mail);
         if (!$mail->send()) {
          echo 'Mailer Error: ' . $mail->ErrorInfo;
             return false;

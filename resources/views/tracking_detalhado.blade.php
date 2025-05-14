@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="{{asset('/css/list.css')}}">
     <link rel="stylesheet" href="{{asset('/css/tracking.css')}}">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="{{asset('/css/sweetalert.cs    s')}}">
+    <link rel="stylesheet" href="{{asset('/css/sweetalert.css')}}">
 
 </head>
 <body>
@@ -39,7 +39,7 @@
     <!--content-->
 
     <div class="container-xxl mt-4 mobile ">
-        <h2 class="content-title pageName">Tracking</h2>
+        <h2 class="content-title pageName" style="color: {!! \Helpers\Helpers::getTextClienteColor(Auth::user()->id_cliente)!!} !important">Tracking</h2>
         <p class="pageText"></p>
         @if($agent->isMobile()!=false)
                 <div class="row gx-5 gy-3 mt-3 ">

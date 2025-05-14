@@ -101,6 +101,7 @@ Route::middleware('auth',AutoTimeout::class)->group(function ()
 
     Route::match(['get'],'/delete_user','App\Http\Controllers\UserController@deleteUser')->name('delete_user');
 
+    Route::match(['get'],'/dash', 'App\Http\Controllers\DashController@postLogin')->name('dash');
 
 });
 
@@ -120,7 +121,7 @@ Route::middleware('guest')->group(function ()
 
     Route::match(['post'],'/update-password','\App\Http\Controllers\UserController@registerUserPassword')->name('updatePassword') ;
 
-    Route::match(['get'],'/impressao-contadoresimpressao-contadores', 'App\Http\Controllers\Inventario@getTotais')->name('impressao-contadores');
+    Route::match(['get'],'/impressao-contadores', 'App\Http\Controllers\Inventario@getTotais')->name('impressao-contadores');
 
 
 
@@ -138,3 +139,7 @@ Route::match(['get'],'/monitoramento_grafico', 'App\Http\Controllers\Inventario@
 Route::match(['get'], '/list-notifications', '\App\Http\Controllers\NotificationController@getNotifications')->name('list-notifications');
 
 Route::match(['post'], '/remove-notification', '\App\Http\Controllers\NotificationController@disableNotification')->name('remove-notification');
+
+Route::match(['post'],'/chamados-rating','\App\Http\Controllers\Chamados@setRating')->name('chamados-rating');
+
+Route::match(['post'],'/cliente_color','\App\Http\Controllers\ClienteController@setColor')->name('cliente_color');

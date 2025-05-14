@@ -48,6 +48,8 @@ class UserModel extends Model
             'tracking' => $tracking,
             'tracking_details' => $tracking_details,
             'abrir_chamado'=> $abrir_chamado,
+            'busca_invetario' =>'1',
+            'busca_invetario_detalhado' =>'1',
             'glpi_id' => $glpi_id,
             'glpi_username'=>$glpi_username,
             'glpi_password'=> $glpi_password

@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use \Helpers\Helpers;
+
+
 class LoginController extends Controller
 {
     public function index()
@@ -39,7 +42,11 @@ class LoginController extends Controller
                 {
                     return redirect('/login')->with('error', 'Usuário/Senha inválidos.');
                 }
-                return redirect()->intended('/list-news');
+                if(str_contains(strtolower(Helpers::getUserCompanyName(Auth::user()->id_cliente)),'low')!=false)
+                {
+                    return redirect()->intended('/list-news');
+                }
+                return redirect()->intended('/dash');
             }
         }
         return redirect('/login')->with('error', 'Usuário/Senha inválidos.');

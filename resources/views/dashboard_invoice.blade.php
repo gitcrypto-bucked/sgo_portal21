@@ -43,7 +43,7 @@
     <!--content-->
 
     <div class="container-xxl mt-4 mobile ">
-        <h2 class="content-title pageName">Dashboard - Faturamento</h2>
+        <h2 class="content-title pageName" style="color: {!! \Helpers\Helpers::getTextClienteColor(Auth::user()->id_cliente)!!} !important">Dashboard - Faturamento</h2>
         <form method="POST" class="d-none">
             <div class="row gx-5 gy-3 mt-3 ">
                 <div class="col-5">

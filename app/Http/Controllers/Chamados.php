@@ -48,9 +48,27 @@ class Chamados extends Controller
 
     public function novoChamados(Request $request)
     {
-
+        // array:7 [▼ // app\Http\Controllers\Chamados.php:51
+        //     "_token" => "nq0HLjmlsbcrHEOJyQeSnBPmFePBWSNGEOXm3CEk"
+        //     "id_ativo_equipamento" => "15224"
+        //     "level" => "0"
+        //     "id_localidade" => "9913"
+        //     "titulo" => "s"
+        //     "descricao" => "s"
+        //     "submit" => null
+        //     ]
         $id_localidade  = $request->id_localidade;
+        $localidade = DB::table('sgo_localidade')->where('id_localidade','=',$id_localidade)->get()[0];
+        $entidade = $localidade->entidade_localidade;
+
+        $id_ativo_equipamento = $request->id_ativo_equipamento; //campo sgo_database id_equipamento
+
+        $equipamento = DB::table('sgo_equipamento')->where('id_ativo_equipamento','=',$id_ativo_equipamento)->get()[0];
+        $id_equipamento = $equipamento->id_equipamento;
+        $serial_equipamento = $equipamento->serial_equipamento;
+        $item_type = \Helpers\Helpers::getItemType($equipamento->familia_equipamento);
         
+
         if($request->hasFile('files')==true)
         {
             
@@ -67,11 +85,19 @@ class Chamados extends Controller
         $result =event(new \App\Events\GLPILogin(Auth::user()->glpi_username, Auth::user()->glpi_password));
         $session_token = $result[0]['session_token'];
 
+
+        if(empty($session_token))
+        {
+            event(new \App\Events\GLPIerror(100,  Auth::user()->glpi_username, Auth::user()->glpi_password));
+
+            return redirect('abrir_chamado')->with('error','Houve um erro ao abrir chamado');
+        }
+
         $g = new \App\Actions\ChangeProfileGLPI(); 
         if($g->changeProfile($session_token)['status']!=200)
         {
             //error handling
-            event(new \App\Events\GLPIerror(300, '', Auth::user()->glpi_username, Auth::user()->glpi_password));
+            event(new \App\Events\GLPIerror(300,  Auth::user()->glpi_username, Auth::user()->glpi_password));
             return redirect('abrir_chamado')->with('error','Houve um erro ao abrir chamado');
         }
         unset($g);
@@ -80,8 +106,7 @@ class Chamados extends Controller
         $titulo = $request->titulo;
         $descricao = $request->descricao;
 
-        $serial_equipamento = $request->equipamento;
-
+       
         $data = [
             'input' => [
                 'name' => $titulo,
@@ -91,7 +116,8 @@ class Chamados extends Controller
                 'urgency' => $priority,
                 'requesters.users'=> Auth::user()->glpi_id,
                 'users_id_recipient'=>Auth::user()->glpi_id,
-                "profiles_id" =>'13'
+                "profiles_id" =>'13',
+                "entities_id" => $entidade
             ],
         ];
 
@@ -108,6 +134,26 @@ class Chamados extends Controller
             //error
         }
         unset($u);
+
+        //ticket item
+        $data = 
+        [
+            'input' => 
+            [
+                "items_id"=> $id_ativo_equipamento,
+                "itemtype"=> addslashes($item_type),
+                "tickets_id"=> $ticketID
+            ],
+        ];
+
+        $g = new \App\Actions\GLPI_addItemTicket();
+
+        $ret = $g->addItems($data, $ticketID, $session_token);
+        if(!isset($ret['id']))
+        {
+            //error
+        }
+        unset($g);
 
         if($request->hasFile('files')==true)
         {
@@ -152,7 +198,10 @@ class Chamados extends Controller
                 'numero_serial' => $serial_equipamento,
                 'cliente'=>  strtoupper(Helpers::getUserCompanyName(Auth::user()->id_cliente)),
                 'id_localidade'=> intval($id_localidade),
-                'data_criacao'=> date('Y-m-d H:i:s')
+                'data_criacao'=> date('Y-m-d H:i:s'),
+                'users_id'=>Auth::user()->id,
+                'users_name'=>Auth::user()->name,
+                'id_equipamento'=>$id_equipamento
             ]);
 
         if($ok)
@@ -164,9 +213,7 @@ class Chamados extends Controller
         {
            # return redirect('abrir_chamado')->with('error','Houve um error ao abrir o chamado');
            return Redirect::back()->with(['error' =>'Houve um error ao abrir o chamado']);
-
         }
-
     }
 
     //-----lista chamados
@@ -190,14 +237,21 @@ class Chamados extends Controller
         #need to check if chamado is  in database
         if(DB::table('sgo_chamado')->where('numero_chamado','LIKE',"%".$numero_chamado."%")->exists()!=true)
         {
-            return Redirect::back()->withErrors(['error' =>'Número chamado não cadastrado']);
+            return Redirect::back()->with(['error' =>'Número chamado não cadastrado']);
         }
+
+        $model = new ChamadosModel();
+
+        $rating =  $model->getRating($numero_chamado)[0];
+
+        unset($model);
 
         $app_token = strlen(config('glpi.token')) ? config('glpi.token') :  'P5DPl9uKZ3VpzicnEXPDMQA2D1K0zQbOUQxp61xQ';
 
         $result =event(new \App\Events\GLPILogin(config('glpi.login'), config('glpi.password')));
 
         $session_token = $result[0]['session_token'];
+
         //@Updated 09/04
         $ticketLinks = DB::SELECT("SELECT documentoID FROM sgo_chamado_x_anexos WHERE numero_chamado LIKE '%".$numero_chamado."' ORDER BY created_at DESC");
 
@@ -215,8 +269,9 @@ class Chamados extends Controller
 
         if(!isset($tiket['links']))
         {
-            return Redirect::back()->withErrors(['error' =>'Esse chamado não se encontra no LCDesk']);
+            return Redirect::back()->with(['error' =>'Esse chamado não se encontra no LCDesk']);
         }
+        
         
         $d = new \App\Actions\GLPIgetdoucment();
         $ticketFiles = [];
@@ -249,7 +304,7 @@ class Chamados extends Controller
         $solution = $s->getITTLSolution($session_token, $ITILSolution);
         unset($s);
 
-        
+        // ordena pela data mais atual -> desativado
         // usort($follow, function($a, $b) {
         //     return strtotime($b['date_mod']) - strtotime($a['date_mod']);
         //   });
@@ -281,6 +336,7 @@ class Chamados extends Controller
             {
                 $solution[$i]['user']= $u->getUsername($solution[$i]['users_id'],$session_token); 
                 sleep(1);
+
                 $solutuionFiles[$i] =   ['id'=>$solution[$i]['id'], 'files' =>  $e->getDocument_Item(trim($solution[$i]['links'][2]['href']), $session_token, Auth::user()->glpi_id)];  
                 sleep(1);   
             }
@@ -293,12 +349,11 @@ class Chamados extends Controller
                                        ->with('follow',$follow)
                                        ->with('solution', $solution)
                                        ->with('FollowFiles' , $followFiles)
-                                       ->with('SoluttionFiles',$solutuionFiles);
+                                       ->with('SoluttionFiles',$solutuionFiles)
+                                       ->with('rating',$rating);
 
 
     }
-
-
 
     //add FollowUP
     public function addFollowUP(Request $request)
@@ -306,11 +361,21 @@ class Chamados extends Controller
         $numero_chamado = $request->numero_chamado;
         $descricao = $request->descricao;
 
-        $request->validate(
-            [
-               'files' => '|mimes:jpeg,bmp,png,jpg,pdf|size:5000',
-            ]
-         );
+      
+
+
+        if($request->hasFile('files')==true)
+        {
+            
+            for($i=0; $i<sizeof($request->file('files')); $i++)
+            {
+                if(intval($request->file('files')[$i]->getSize())>=16384)
+                {
+                    return Redirect::back()->with('error','O arquivo '.$request->file('files')[$i]->getClientOriginalName().' é maior que o permitido');
+                    
+                }
+            }            
+        } 
 
         $result =event(new \App\Events\GLPILogin(Auth::user()->glpi_username, Auth::user()->glpi_password));
         $session_token = $result[0]['session_token'];
@@ -319,7 +384,8 @@ class Chamados extends Controller
         if($g->changeProfile($session_token)['status']!=200)
         {
             //error handling
-            return Redirect::back()->withErrors(['error' =>'Houve um erro ao cadastrar um followup']);
+            event(new \App\Events\GLPIerror(300, Auth::user()->glpi_username, Auth::user()->glpi_password));
+            return Redirect::back()->with(['error' =>'Houve um erro ao cadastrar um followup']);
         }
         unset($g);
 
@@ -343,7 +409,8 @@ class Chamados extends Controller
         
         if(!isset($resp['id']))
         {
-            return Redirect::back()->withErrors(['error' =>'Houve um erro ao cadastrar um followup']);
+            event(new \App\Events\GLPIerror(500, Auth::user()->glpi_username,$numero_chamado));
+            return Redirect::back()->with(['error' =>'Houve um erro ao cadastrar um followup']);
         }
 
         $followupID = strval($resp['id']);
@@ -355,21 +422,13 @@ class Chamados extends Controller
 
         // if(!isset($ret['id']))
         // {
-        //     return Redirect::back()->withErrors(['error' =>'Houve um erro ao cadastrar um followup']);
+        //     return Redirect::back()->with(['error' =>'Houve um erro ao cadastrar um followup']);
         // }
         // unset($u);
 
+        $errors = [];
         if($request->hasFile('files')==true)
         {
-            for($i=0; $i<sizeof($request->file('files')); $i++)
-            {
-                if($request->file('files')[$i]->getSize()>=219248)
-                {
-                    return Redirect::back()->withErrors('error','O arquivo '.$request->file('files')[$i]->getClientOriginalName().' é maior que o permitido');
-                }
-            }
-
-
             $documentID= [];
             $upload = new  \App\Actions\GLPIUpload();
             for($i=0; $i<sizeof($request->file('files')); $i++)
@@ -393,10 +452,10 @@ class Chamados extends Controller
                 ];
                 $linkID[$i] = $l->documentItem($data, $session_token);
 
-                $errors =  DB::table('chamados_x_followup')->insert(
+                $errors[$i] =  DB::table('sgo_chamado_x_followup')->insert(
                     [
                         'numero_chamado'=> $numero_chamado,
-                        'documentoID' => $documentID[$i],
+                        'document_item' => $documentID[$i],
                         'numero_followup' =>$followupID,
                         'created_at' => date('Y-m-d H:i:s') 
                     ]);
@@ -406,11 +465,11 @@ class Chamados extends Controller
 
         if(Helpers::same($errors))
         {
-            return Redirect::back()->withErrors(['success' => 'Followup cadastrado com sucesso']);              
+            return Redirect::back()->with(['success' => 'Followup cadastrado com sucesso']);              
         }
         else
         {
-            return Redirect::back()->withErrors(['error' =>'Houve um erro ao cadastrar um followup']);
+            return Redirect::back()->with(['error' =>'Houve um erro ao cadastrar um followup']);
         }
     }
 
@@ -422,6 +481,21 @@ class Chamados extends Controller
         $target =3;
         $percent = 0;
         return view('dashboard_chamados')->with('dentro',$dentro)->with('fora',$fora)->with('target',$target)->with('percent',$percent);
+    }
+
+    //rating da chamada
+    public function setRating(Request $request)
+    {
+        $uid = (int) $request->uid;
+        $rating = (int) $request->rating;
+
+        $model = new ChamadosModel();
+        if($model->updateRating($uid, $rating)!=false)
+        {
+            return 200;
+        }
+        else
+            return 300;
     }
 
 }

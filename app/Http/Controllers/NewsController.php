@@ -42,7 +42,7 @@ class NewsController extends Controller
         if ($request->file('thumb')->isValid())
         {
             $file = $request->file('thumb');
-            $path = $request->file('thumb')->storeAs('thumb_', $file->hashName());
+            $path = $request->file('thumb')->storeAs('thumb_', $file->hashName().'.'.$file->getClientOriginalExtension() );
         }
         else
         {
@@ -96,10 +96,11 @@ class NewsController extends Controller
         $id= $request->newsID;
         $model = new NewsModel();
         $files = $model->getFIles($id)[0]->thumb;
-        if(Storage::exists('thumb_/'.$files))
-        {
-            Storage::delete('thumb_/'.$files);
-        }
+        
+        // if(Storage::exists('thumb_/'.$files))
+        // {
+        //     Storage::delete('thumb_/'.$files);
+        // }
         if($model->deleteNews($id))
         {
             return redirect('/news-manager')->with('success', 'Noticia excuida com sucesso!');

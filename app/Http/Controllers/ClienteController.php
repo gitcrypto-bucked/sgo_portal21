@@ -71,7 +71,9 @@ class ClienteController extends Controller
         if ($request->file('logo')->isValid())
         {
             $file = $request->file('logo');
-            $path = $request->file('logo')->storeAs('clientes', $file->hashName());
+            #$path = $request->file('logo')->storeAs('clientes', $file->hashName());
+            $path=  $arquivo->move(public_path('clientes').'/',  $file->hashName());
+            dd($path);
         }
 
         $model = new ClientesModel();
@@ -111,14 +113,33 @@ class ClienteController extends Controller
         $clienteID = $request->idCliente; //refers to clientes.idCliente
         if ($request->file('logo')->isValid())
         {
+            #$arquivo->move(public_path('upload').'/', $fileName.'.'.$arquivo->getClientOriginalExtension());
+
             $file = $request->file('logo');
-            $path = $request->file('logo')->storeAs('clientes', $file->hashName());
+            $hashname =  $file->hashName();
+            //$path = $request->file('logo')->storeAs('clientes', $file->hashName());
+            $file->move(public_path('clientes').'/',  $file->hashName());
         }
         $model = new ClientesModel();
-        if($model->updateClienteLogo($clienteID, $file->hashName(), $path)!=false)
+        if($model->updateClienteLogo($clienteID, $hashname, 'clientes/'.$hashname)!=false)
         {
             return json_encode(['status' => 202]);
         }
         return json_encode(['status' => 302]);
+    }
+
+    public function setColor(Request $request)
+    {
+        $sidebar = $request->sidebar;
+        $text = $request->header;
+        $id_cliente = $request->id_cliente;
+        $model = new ClientesModel();
+        if($model->updateColors($id_cliente,$sidebar,$text)!=false)
+        {
+            return json_encode(['status' => 202]);
+        }
+        return json_encode(['status' => 302]);
+   
+
     }
 }

@@ -1,6 +1,6 @@
 @php($menu = new \App\Http\Controllers\menuController())
-<aside id="sidebar-wrapper" >
-    <div class="sidebar-brand">
+<aside id="sidebar-wrapper" style="background:{!! \Helpers\Helpers::getHeaderClienteColor(Auth::user()->id_cliente)!!} !important;">
+    <div class="sidebar-brand" >
         <!--desktop display -->
         {!! $menu->getDesktopLogo() !!}
         <!--desktop display end-->

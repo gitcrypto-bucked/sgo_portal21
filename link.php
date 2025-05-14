@@ -1,6 +1,6 @@
 <?php 
+$link ='storage/public/';
+$target = 'public/storage';
 
-$target =__DIR__.'../storage/app/';
-$link = __DIR__.'../public/storage';
-symlink($target, $link);
+var_dump(symlink($target, $link));
 echo "Done";

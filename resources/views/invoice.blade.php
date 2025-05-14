@@ -33,7 +33,7 @@
     <!--content-->
 
     <div class="container-xxl mt-4 mobile ">
-        <h2 class="content-title pageName">Listagem - Faturamento</h2>
+        <h2 class="content-title pageName" style="color: {!! \Helpers\Helpers::getTextClienteColor(Auth::user()->id_cliente)!!} !important">Listagem - Faturamento</h2>
         <p class="pageText">Veja abaixo todos os equipamentos e serviços que você possui com a LowCost. Utilzie a busca para encontrar os itens especificos!</p>
         @if($agent->isMobile()!=false)
             <!--mobile-->

@@ -22,12 +22,22 @@
     <link rel="stylesheet" href="{{asset('/css/dropdown.css')}}">
     <link rel="stylesheet" href="{{asset('/css/search.css')}}">
     <link rel="stylesheet" href="{{asset('/css/list.css')}}">
-    <link rel="stylesheet" href="{{asset('/css/rating.css')}}">
+    {{-- <link rel="stylesheet" href="{{asset('/css/rating.css')}}"> --}}
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="{{asset('/css/sweetalert.css')}}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="{{asset('/css/chamados.css')}}">
+
+    <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/css/star-rating.min.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/themes/krajee-svg/theme.css" media="all" rel="stylesheet" type="text/css" />
+    
+	<!-- important mandatory libraries -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/js/star-rating.min.js" type="text/javascript"></script>
+
+	<!-- with v4.1.0 Krajee SVG theme is used as default (and must be loaded as below) - include any of the other theme JS files as mentioned below (and change the theme property of the plugin) -->
+	<script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/themes/krajee-svg/theme.js"></script>
 
 </head>
 <body>
@@ -42,7 +52,7 @@
     <!--content-->
 
     <div class="container-xxl mt-4 mobile ">
-        <h2 class="content-title pageName">Gestão de Chamados</h2>
+        <h2 class="content-title pageName" style="color: {!! \Helpers\Helpers::getTextClienteColor(Auth::user()->id_cliente)!!} !important">Gestão de Chamados</h2>
         <p class="pageText"></p>
 
     </div>
@@ -128,13 +138,15 @@
                                <p> Avaliação: </p>
                             </td>
                             <td >
-                                <div class="rating" style="margin-top: -8px !important">
-                                    <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="Rocks!">5 stars</label>
-                                    <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="Pretty good">4 stars</label>
-                                    <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="Meh">3 stars</label>
-                                    <input type="radio" id="star2" name="rating" value="2" checked/><label for="star2" title="Kinda bad">2 stars</label>
-                                    <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="Sucks big time">1 star</labe/>
-                                </div>
+                           
+                                <input id="input-7-sm" name="input-7-sm" style="margin-top: -8px !important"
+                                value="{!! intval($rating->avaliacao) !!}"  
+                                onchange="processRating(this)"
+                                data-id="{!! intval($rating->uid) !!}"
+                                data-show-caption="false"
+                                data-show-clear="false"  data-size="sm"
+                                class="rating " data-min="0" data-max="5" data-step="1" 
+                                >
                             </td>
                             <td>
                                 <a href="{{route('chamados')}}" style="color:black
@@ -186,7 +198,7 @@
                   </div>
                   <div class="card-body" style="border-radius:0px !important;">
                     <p  style=" word-break: break-all;">
-                        {!! strip_tags($details['content']) !!}
+                        {!! ucfirst(strip_tags($details['content'])) !!}
                       </p>
                       <ul class="list-group list-group-horizontal" >
                             @for($i=0; $i< sizeof($media); $i++)
@@ -196,41 +208,73 @@
                   </div>
                 </div>
               </li>
-          
               @if(!empty($follow))
                     @for($i =0; $i<sizeof($follow); $i++)
-                        <li class="d-flex justify-content-between mb-4 " >
-                            <div style="background-color:#E3F0E8!important; height:84px ; width:126.97px; border-radius:13px;">
-                                <p class="text">@php( \Helpers\Helpers::generateUserSigmaName($follow[$i]['user']) )</p>
-                                {{-- @if(!isset($FollowFiles[0]['files']['users'][0]))
-                                   
-                                @else
-                                    <p class="text">@php( \Helpers\Helpers::generateUserSigmaName($FollowFiles[0]['files']['users'][0]) )</p>
-                                @endif --}}
-                                <p   class='date'style=" word-break: break-all"> {!! date('d/m/Y H:i', strtotime( $follow[$i]['date_mod'])) !!}</p>
-                            </div>   
-                            <div class="card " style="background-color:#E3F0E8!important;border-radius:0px !important; width:55vw !important">
+
+                        @if(intval($follow[$i]['users_id']) != intval(Auth::user()->glpi_id) )
+                            <li class="d-flex justify-content-between mb-4 " >
+        
+                                <div class="card " style="background-color:#e9e6e2 !important;border-radius:0px !important; width:55vw !important">
+                                    <div class="card-header d-flex justify-content-between p-3" style="background-color:#e9e6e2 !important; height:1px !important">
+                    
+                                    </div>
+                                        <div class="card-body" style="border-radius:0px !important;">
+                                            <p  style=" word-break: break-all;">
+                                                {!! ucfirst(strip_tags(html_entity_decode(strval($follow[$i]['content'])))) !!}
+                                            </p>
+                                        
+                                        <ul class="list-group list-group-horizontal" >
+                                        @if(isset($FollowFiles[$i]['files']['filenames']))
+                                            @for($x=0; $x < sizeof($FollowFiles[$i]['files']['filenames']); $x++)
+                                                @if($follow[$i]['id']===$FollowFiles[$i]['id'])
+                                                        <li class="list-group-item"> <a href="{{ url('download/'.$FollowFiles[$i]['files']['filenames'][$x]) }}" target="_blank" >Ver {{\Helpers\Helpers::fileType($FollowFiles[$i]['files']['filenames'][$x]) }} </a></li>
+                                                    
+                                                @endif
+                                            @endfor  
+                                        @endif
+                                        </ul>
+                                    </div>      
+                                </div>
+                                <div style="background-color:#e9e6e2 !important; height:84px ; width:126.97px; border-radius:13px;">
+                                    <p class="text" style="color: #6e6e64 !important">@php( \Helpers\Helpers::generateUserSigmaName($follow[$i]['user']) )</p>
+                                    {{-- @if(!isset($FollowFiles[0]['files']['users'][0]))
+                                    @else
+                                        <p class="text">@php( \Helpers\Helpers::generateUserSigmaName($FollowFiles[0]['files']['users'][0]) )</p>
+                                    @endif --}}
+                                    <p   class='date'style=" word-break: break-all"> {!! date('d/m/Y H:i', strtotime( $follow[$i]['date_mod'])) !!}</p>
+                                </div>   
+                            </li> 
+                        @else
+                            <li class="d-flex justify-content-between mb-4 " >
+                                <div style="background-color:#E3F0E8!important; height:84px ; width:126.97px; border-radius:13px;">
+                                    {{-- <p class="text">@php( \Helpers\Helpers::generateUserSigmaName(Auth::user()->name))</p> --}}
+                                    <p class="text" style="color: #6e6e64 !important">@php( \Helpers\Helpers::generateUserSigmaName($follow[$i]['user']) )</p>
+                                    <p   class='date'style=" word-break: break-all"> {!! date('d/m/Y H:i', strtotime($details['date'])) !!}</p>
+                                </div>
+                                <div class="card " style="background-color:#E3F0E8!important;border-radius:0px !important; width:55vw !important">
                                 <div class="card-header d-flex justify-content-between p-3" style="background-color:#E3F0E8!important; height:1px !important">
                 
                                 </div>
                                 <div class="card-body" style="border-radius:0px !important;">
                                     <p  style=" word-break: break-all;">
-                                        {!! strip_tags(html_entity_decode(strval($follow[$i]['content']))) !!}
+                                        {!! ucfirst(strip_tags(html_entity_decode(strval($follow[$i]['content'])))) !!}
                                     </p>
-                                
-                                <ul class="list-group list-group-horizontal" >
-                                @if(isset($FollowFiles[$i]['files']['filenames']))
-                                    @for($x=0; $x < sizeof($FollowFiles[$i]['files']['filenames']); $x++)
-                                        @if($follow[$i]['id']===$FollowFiles[$i]['id'])
-                                                <li class="list-group-item"> <a href="{{ url('download/'.$FollowFiles[$i]['files']['filenames'][$x]) }}" target="_blank" >Ver {{\Helpers\Helpers::fileType($FollowFiles[$i]['files']['filenames'][$x]) }} </a></li>
-                                            
-                                        @endif
-                                    @endfor  
-                                @endif
-                                </ul>
-                            </div>      
-                            </div>
-                        </li> 
+                                    <ul class="list-group list-group-horizontal" >
+                                        @if(isset($FollowFiles[$i]['files']['filenames']))
+                                            @for($x=0; $x < sizeof($FollowFiles[$i]['files']['filenames']); $x++)
+                                                @if($follow[$i]['id']===$FollowFiles[$i]['id'])
+                                                        <li class="list-group-item"> 
+                                                            <a href="{{ url('download/'.$FollowFiles[$i]['files']['filenames'][$x]) }}" target="_blank" >
+                                                                Ver {{\Helpers\Helpers::fileType($FollowFiles[$i]['files']['filenames'][$x]) }} 
+                                                            </a>
+                                                        </li>   
+                                                @endif
+                                            @endfor  
+                                    @endif
+                                </div>
+                                </div>
+                            </li>
+                        @endif
                     @endfor   
               @endif
 
@@ -249,7 +293,7 @@
                             </div>
                             <div class="card-body" style="border-radius:0px !important;">
                                 <p  style=" word-break: break-all;">
-                                    {!! strip_tags(html_entity_decode(strval($solution[$i]['content']))) !!}
+                                    {!! ucfirst(strip_tags(html_entity_decode(strval($solution[$i]['content'])))) !!}
                                 </p>
                             
                             <ul class="list-group list-group-horizontal" >
@@ -375,23 +419,10 @@
 
 
 
-    $(document).ready(function() {
-    $("form#ratingForm").submit(function(e)
-    {
-        e.preventDefault(); // prevent the default click action from being performed
-        if ($("#ratingForm :radio:checked").length == 0) {
-            $('#status').html("nothing checked");
-            return false;
-        } else {
-            $('#status').html( ' Youpicked ' + $('input:radio[name=rating]:checked').val() );
-        }
-    });
-});
-
-function checkFiles(files)
+    function checkFiles(files)
     {       
         console.log(files); 
-        if(files.length===3) {
+        if(files.length===3 || files.length<=3)  {
 
         let list = new DataTransfer;
         for(let i=0; i<3; i++)
@@ -399,10 +430,47 @@ function checkFiles(files)
 
             document.getElementById('files').files = list.files
         }       
-        else if(files.length<3) 
+        else if(files.length>3) 
         {
             alert("Escolha somente 3 arquivos"); return;
         }    
-    }     
+    }    
+    
+    function processRating(elem)
+    {
+        console.log(elem.value, elem.dataset.id);
+        let id = elem.dataset.id;
+        let rating = elem.value;
+        setRating(id,rating);
+    }
+
+    async function setRating(uid, rating)
+    {
+        let formData  = new FormData()
+           formData.append('_token','{!! @csrf_token() !!}');
+           formData.append('csrf','{!! @csrf_token() !!}');
+           formData.append('uid',uid);
+           formData.append('rating',rating);
+
+           const response = await fetch(
+               '{{route('chamados-rating')}}',
+               {
+                   method: 'POST',
+                   headers: {
+                       'x-rapidapi-host': 'carbonfootprint1.p.rapidapi.com',
+                       'x-rapidapi-key': 'your_api_key'
+                   },
+                   body: formData
+               }
+           );
+        const res = await response.text();
+        if(res)
+        {
+            console.log(res);
+
+        }
+    }   
+
+
 </script>
 </html>
