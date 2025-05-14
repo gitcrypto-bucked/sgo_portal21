@@ -59,15 +59,51 @@ class ChamadosModel extends Model
         //     ->get();
 
         return DB::table('sgo_chamado')
+                 ->selectRaw('sgo_chamado.*')
                  ->where('sgo_chamado.numero_chamado_interno','=', $numero_chamado_interno)
-                 ->where('sgo_chamado.numero_serial', '=', $serial)
                  ->orderBy('sgo_chamado.data_fechamento','desc')
                  ->limit('1')
                  ->get();
     }
 
+    
+    public function getRating($numero_chamado)
+    {
+        //@Deprecated 09/04
+        // return DB::table('chamados')->where('numero_chamado_interno', '=', $numero_chamado_interno)
+        //     ->where('numero_serial', '=', $serial)->orderBy('data_fechamento', 'desc')
+        //     ->limit('1')
+        //     ->get();
+
+        return DB::table('sgo_chamado')
+                 ->selectRaw('sgo_chamado.avaliacao, sgo_chamado.uid')
+                 ->where('sgo_chamado.numero_chamado','=', $numero_chamado)
+                 ->get();
+    }
 
 
+    public function updateRating($uid, $rating)
+    {
+        return DB::table('sgo_chamado')->where('uid','=',$uid)->update(['avaliacao'=>$rating]);
+    }
+
+
+    public function getTotalAbertos($id_cliente)
+    {
+        $SQL =" SELECT COUNT(a.status) as abertos FROM sgo_chamado as a
+                JOIN sgo_cliente as c ON a.cliente = c.nome_cliente
+                WHERE c.id_cliente=".$id_cliente." AND a.status='ABERTO' AND a.data_criacao between (CURDATE() - INTERVAL 1 MONTH) and CURDATE() ";
+        return DB::select($SQL);
+    }
+
+
+    public function getTotalFechados($id_cliente)
+    {
+        $SQL =" SELECT COUNT(a.status) as fechados FROM sgo_chamado as a
+        JOIN sgo_cliente as c ON a.cliente = c.nome_cliente
+        WHERE c.id_cliente=".$id_cliente." AND a.status='FECHADO' AND a.data_criacao between (CURDATE() - INTERVAL 1 MONTH) and CURDATE() ";
+        return DB::select($SQL);
+    }
 
 
 

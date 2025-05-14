@@ -132,6 +132,11 @@ class ClientesModel extends Model
         return DB::table('sgo_cliente')->where('id_cliente', $id)->get();
     }
 
+    public function updateColors($id_cliente,$sidebar,$text)
+    {
+        return DB::table('sgo_cliente')->where('id_cliente','=',$id_cliente)->update(['header'=>$sidebar,'text'=>$text]);
+    }
+
 
 
 }

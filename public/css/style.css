@@ -202,6 +202,12 @@ a:focus {
   margin-right: -15.5em;
 }
 
+
+#wrapper-alt {
+  padding-left: 0 !important;
+}
+
+
 @media (min-width: 992px)
 {
 

@@ -165,14 +165,14 @@
                                 <div style="width: 23%">
                                     <div class="text-secondary">ações</div>
                                     @if($clients[$i]->active =='1')
-                                        <button  class="btn btn-outline-secondary px-2" id="{{$clients[$i]->id_cliente}}" value="desativar" type="button" onclick="desativar(this)"  name="submitbutton" ><i class="fa fa-times"  data-toggle="tooltip" data-placement="bottom" title="Desativar"></i></button>
+                                        <button  class="btn btn-outline-secondary px-2" id="{{$clients[$i]->id_cliente}}" value="desativar" type="button" onclick="desativar(this)"  name="submitbutton" data-toggle="tooltip" data-placement="top" title="Desativar"><i class="fa fa-times"  ></i></button>
                                     @else
-                                        <button class="btn btn-outline-primary px-2" id="{{$clients[$i]->id_cliente}}" value="ativar" type="button" onclick="ativar(this)" name="submitbutton" ><i class="fa fa-check"  data-toggle="tooltip" data-placement="bottom" title="Ativar"></i></button>
+                                        <button class="btn btn-outline-primary px-2" id="{{$clients[$i]->id_cliente}}" value="ativar" type="button" onclick="ativar(this)" name="submitbutton" data-toggle="tooltip" data-placement="top" title="Ativar"><i class="fa fa-check"  ></i></button>
                                     @endif
-                                    <button class="btn btn-outline-danger px-2"  id="{{$clients[$i]->id_cliente}}" value="excluir" type="button" onclick="excluir(this)"   name="submitbutton"><i class="fa fa-user-times"  data-toggle="tooltip" data-placement="bottom" title="Excluit"></i></button>
+                                    <button class="btn btn-outline-danger px-2"  id="{{$clients[$i]->id_cliente}}" value="excluir" type="button" onclick="excluir(this)"   name="submitbutton"  data-toggle="tooltip" data-placement="top" title="Excluir"><i class="fa fa-user-times" ></i></button>
                                         <button class="btn btn-outline-success" id="{{$clients[$i]->id_cliente}}" value="userlist" type="button" onclick="window.location.href='{{route('usuarios_clientes')}}?cliente={!! base64_encode($clients[$i]->id_cliente) !!}&_token={!! @csrf_token() !!}'">Ver Usuarios</button>
                                    
-                                        <button class="btn btn-outline-success" id="{{$clients[$i]->nome_cliente}}" value="userlist" type="button" onclick="window.location.href='{{route('trocar_tela')}}?cliente={!! base64_encode($clients[$i]->nome_cliente) !!}&idCliente={!! base64_encode($clients[$i]->id_cliente    ) !!}}&_token={!! @csrf_token() !!}'" data-toggle="tooltip" data-placement="bottom" title="Acessar cliente">
+                                        <button class="btn btn-outline-success" id="{{$clients[$i]->nome_cliente}}" value="userlist" type="button" onclick="window.location.href='{{route('trocar_tela')}}?cliente={!! base64_encode($clients[$i]->nome_cliente) !!}&idCliente={!! base64_encode($clients[$i]->id_cliente    ) !!}}&_token={!! @csrf_token() !!}'" data-toggle="tooltip" data-placement="top" title="Acessar cliente">
                                             <i class="fa fa-sign-in" aria-hidden="true"></i>
                                         </button>
                                 </div>
@@ -180,26 +180,33 @@
                                     <div class="text-secondary">logo</div>
                                     @if($clients[$i]->logo_cliente!='' || $clients[$i]->logo_cliente!=NULL)
                                         <button class="btn btn-outline-info px-2"  id="{{$clients[$i]->id_cliente}}"  
-                                            value="{{asset('storage/public/'.$clients[$i]->path)}}" 
+                                            value="{{asset('clientes/'.$clients[$i]->logo_cliente)}}" 
                                              aria="{{$clients[$i]->path}}"
-                                              data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Alterar logo"
+                                              data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Alterar logo"
                                                 type="button" onclick="update(this)" name="submitbutton">
                                             <i class="fa fa-picture-o" aria-hidden="true"></i>
                                         </button>
                                     @elseif($clients[$i]->logo_cliente=='' || $clients[$i]->logo_cliente==NULL)   
                                         <button class="btn btn-outline-primary px-2"  id="{{$clients[$i]->id_cliente}}"  value="{{$clients[$i]->id_cliente}}"
-                                                class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Cadastrar logo"
+                                                class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Cadastrar logo"
                                                 type="button" onclick="addLogo(this)" name="submitbutton">
                                             <i class="fa fa-crop" aria-hidden="true"></i>
                                         </button>
                                     @endif
+                                </div>  
+                                <div class="px-1" style="width: 13%">  
+                                    <div class="text-secondary">cor de destaque</div>
+                                    <button class="btn btn-outline-primary px-2"  id="{{$clients[$i]->id_cliente}}"  value="{{$clients[$i]->id_cliente}}"
+                                            class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Alterar cor de destaque"
+                                            type="button" onclick="addColor(this)" name="submitbutton">
+                                            <i class="fa fa-paint-brush" aria-hidden="true"></i>
+                                    </button>
                                 </div>
                             </td>       
                         </tr>    
                     @endfor
                 </table>
             <!-- table button block -->
-
                     <div  class='col-lg-8 mt-4'>
                         @if($clients instanceof \Illuminate\Pagination\AbstractPaginator)
                             {{$clients->links()}}
@@ -246,7 +253,7 @@
                 <p id='msg2'></p>
                 <input type="hidden" id="clienteIDUpdate">
                 <div style="width: 300px; outline: none; border: 0px !important; margin-left: 30% !important;">
-                    <img class="card-img-left img-fluid " alt="" id="imgUpdate" width="220" height="250" style="border: 0px !important;outline: none !important;
+                    <img class="card-img-left  " alt="" id="imgUpdate" width="200" height="auto" style="border: 0px !important;outline: none !important;
                              padding:10px !important">
                 </div>
                 <input type="file" id="logoCliente" name="logoCliente" accept="image/*">
@@ -258,9 +265,34 @@
     </div>
 </div>
 <!--end modal cliente image -->
+<!--modal update cliente color -->
+<div class="modal" tabindex="-1" id="modalColor">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Atualizar Cor de destaque do Cliente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id='msg2'></p>
+                <input type="hidden" id="clienteIDColorUpdate">
+                <label for="sidebar">Cor de destaque sidebar</label><br>
+                <input type="color"  style="width: 180px;border-radius:5px" id="sidebar" name="sidebar" value="#5885af">
+                <label for="header">Cor de destaque Header (nome da pagina)</label><br>
+                <input type="color"  style="width: 180px;border-radius:5px" id="header" name="header" value="#75e6da">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary"  onclick="colorUpdate(this)">Atualizar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end modal cliente color -->
 <!-- partial -->
 <script  src="{{asset('/js/script.js')}}"></script>
 <script  src="{{asset('/js/main.js')}}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js" integrity="sha512-2rNj2KJ+D8s1ceNasTIex6z4HWyOnEYLVC3FigGOmyQCZc2eBXKgOxQmo3oKLHyfcj53uz4QMsRCWNbLd32Q1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
         integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
         crossorigin="anonymous"></script>
@@ -565,9 +597,59 @@
     }
 
 
-    function addLogo(elem)
+    function addColor(elem)
     {
+        document.getElementById('clienteIDColorUpdate').value=elem.id
+        $('#modalColor').modal('toggle');
+    }
 
+    function colorUpdate()
+    {
+        let header = document.getElementById('header').value;
+        let sidebar =  document.getElementById('sidebar').value;
+        console.log(header,sidebar);
+        if(sidebar!='#FFFFFF' && sidebar !='#000000' && header!='#FFFFFF')
+        {
+            var modal = new bootstrap.Modal(document.getElementById('modalColor'));
+            modal.hide();
+            doAddColor(sidebar, header);
+        }
+    }
+
+    async function doAddColor(sidebar, header) 
+    {
+        form = new FormData();
+        form.append('sidebar',sidebar);
+        form.append('header',header);
+        form.append('id_cliente',document.getElementById('clienteIDColorUpdate').value);
+        form.append('_token','{!! @csrf_token() !!}');
+        form.append('csrf','{!! @csrf_token() !!}');
+
+        const response = await fetch(
+            '{{route('cliente_color')}}',
+            {
+                method: 'POST',
+                headers: {
+                    'x-rapidapi-host': 'carbonfootprint1.p.rapidapi.com',
+                    'x-rapidapi-key': 'your_api_key'
+                },
+                body: form
+            }
+        );
+        const res = await response.text();
+        console.log(res)
+        if(res)
+        {
+            resp = JSON.parse(res);
+            if(resp.status==202)
+            {
+                Swal.fire({
+                    title: "Cores de destaque atualizadas com sucesso!",
+                    text: "",
+                    icon: "success"
+                });
+            }
+        }
     }
 
 </script>

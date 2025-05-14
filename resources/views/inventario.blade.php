@@ -43,7 +43,7 @@
     <!--content-->
 
     <div class="container-xxl mt-4 mobile mb-4">
-        <h2 class="content-title pageName">Inventário de Equipamentos e Serviços</h2>
+        <h2 class="content-title pageName" style="color: {!! \Helpers\Helpers::getTextClienteColor(Auth::user()->id_cliente)!!} !important">Inventário de Equipamentos e Serviços</h2>
         <p class="pageText">Veja abaixo todos os equipamentos e serviços que você possui com a LowCost. Utilzie a busca para encontrar os itens especificos!</p>
 
         @if($agent->isMobile()!=false)
@@ -124,6 +124,7 @@
             <!--mobile-->
 
         @else
+
         <div class="row gx-5 gy-3 mt-3 ">
             <form method="POST" action="{!! route('busca_invetario') !!}" class="row g-3">
                 @csrf
@@ -141,7 +142,7 @@
                             @if(gettype($localidades) == 'array' )
                                 <option value="">Selecione</option>
                                 @for($i=0; $i< sizeof(@$localidades); $i++)
-                                    <option class="text-muted">{!! @$localidades[$i]->nome_localidade !!}</option>
+                                    <option class="text-muted" value='{!! @$localidades[$i]->nome_localidade !!}'>{!!  ucwords(strtolower( \Helpers\Helpers::sanitizeString( @$localidades[$i]->nome_localidade))) !!}</option>
                                 @endfor
                             @else 
                                 <option class="text-muted" selcted>{!! @$localidades !!}</option>

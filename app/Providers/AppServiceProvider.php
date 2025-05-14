@@ -25,7 +25,5 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
         Paginator::useBootstrap();
-        Blade::setEchoFormat('e(utf8_encode(%s))');  
-
     }
 }

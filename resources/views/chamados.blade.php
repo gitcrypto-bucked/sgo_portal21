@@ -17,64 +17,24 @@
           crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.14.1/themes/base/jquery-ui.min.css" integrity="sha512-TFee0335YRJoyiqz8hA8KV3P0tXa5CpRBSoM0Wnkn7JoJx1kaq1yXL/rb8YFpWXkMOjRcv5txv+C6UluttluCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.14.1/themes/base/theme.min.css" integrity="sha512-lfR3NT1DltR5o7HyoeYWngQbo6Ec4ITaZuIw6oAxIiCNYu22U5kpwHy9wAaN0vvBj3U6Uy2NNtAfiaKcDxfhTg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
+        <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
     <link rel="stylesheet" href="{{asset('/css/style.css')}}">
     <link rel="stylesheet" href="{{asset('/css/dropdown.css')}}">
     <link rel="stylesheet" href="{{asset('/css/search.css')}}">
     <link rel="stylesheet" href="{{asset('/css/list.css')}}">
-    <link rel="stylesheet" href="{{asset('/css/rating.css')}}">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="{{asset('/css/sweetalert.css')}}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <style>
-        .material-icons.star-icon {
-            color: lightgrey;
-            font-size: 28px;
-            cursor: pointer;
-        }
+    <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/css/star-rating.min.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/themes/krajee-svg/theme.css" media="all" rel="stylesheet" type="text/css" />
+    
+	<!-- important mandatory libraries -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/js/star-rating.min.js" type="text/javascript"></script>
 
-        .rating {
-            float:left;
-            border:none;
-        }
-        .rating:not(:checked) > input {
-            position:absolute;
-            top:-9999px;
-            clip:rect(0, 0, 0, 0);
-        }
-        .rating:not(:checked) > label {
-            float:right;
-            width:1em;
-            padding:0 .1em;
-            overflow:hidden;
-            white-space:nowrap;
-            cursor:pointer;
-            font-size:200%;
-            line-height:1.2;
-            color:#ddd;
-            text-shadow: 1px 1px #c60, 2px 2px #940, .1em .1em .2em rgba(0, 0, 0, .5)
-        }
-        .rating:not(:checked) > label:before {
-            content:'★ ';
-            text-shadow:1px 1px #bbb, 2px 2px #666, .1em .1em .2em rgba(0,0,0,.5);
-        }
-        .rating > input:checked ~ label {
-            color: #f70 !important;
-
-        }
-        .rating:not(:checked) > label:hover, .rating:not(:checked) > label:hover ~ label {
-            color: #f70!important;
-        }
-        .rating > input:checked + label:hover, .rating > input:checked + label:hover ~ label, .rating > input:checked ~ label:hover, .rating > input:checked ~ label:hover ~ label, .rating > label:hover ~ input:checked ~ label {
-            color: #f70!important;
-        }
-        .rating > label:active {
-            position:relative;
-        }
+	<!-- with v4.1.0 Krajee SVG theme is used as default (and must be loaded as below) - include any of the other theme JS files as mentioned below (and change the theme property of the plugin) -->
+	<script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-star-rating@4.1.2/themes/krajee-svg/theme.js"></script>
 
 
-    </style>
 </head>
 <body>
 <!-- partial:index.partial.html -->
@@ -87,7 +47,7 @@
     @include('components.navwrapper')
     <!--content-->
     <div class="container-xxl mt-4  ">
-        <h2 class="content-title pageName">Gestão de Chamados</h2>
+        <h2 class="content-title pageName" style="color: {!! \Helpers\Helpers::getTextClienteColor(Auth::user()->id_cliente)!!} !important">Gestão de Chamados</h2>
         <p class="pageText"></p>
         <!---content -->
         @if($agent->isMobile()!=false)
@@ -331,7 +291,7 @@
                     <table class="table_list">
                         @for($i=0; $i<sizeof($chamados); $i++)
                             <tr class="card my-2">
-                                <td class="card-header">
+                                <td class="card-header" style="height: 88px !important">
                                     <div class="float-container">
                                         <div class="float-child_invoice_chamados_first">
                                             <div class="text-secondary">N° Chamado</div>
@@ -340,7 +300,7 @@
 
                                         <div class="float-child_invoice_chamados d-none  d-md-block d-lg-block">
                                             <div class="text-secondary">Aberto por</div>
-                                            <div class="green"><abbr title="HyperText Markup Language" class="initialism">{!! ucwords(Auth::user()->name) !!}</abbr></div>
+                                            <div class="green"><abbr title="HyperText Markup Language" class="initialism">{!! ucwords($chamados[$i]->users_name) !!}</abbr></div>
                                         </div>
 
                                         <div class="float-child_invoice_chamados ">
@@ -363,17 +323,15 @@
                                         </div>
                                         <div class="float-child_invoice_rating d-none d-md-block d-lg-block">
                                             <div class="text-secondary">Avaliação</div>
-                                            <div class="green">
-                                                <div class="green">
-                                                    <div class="rating-container" data-rating="0">
-                                                        <i class="material-icons star-icon">star</i>
-                                                        <i class="material-icons star-icon">star</i>
-                                                        <i class="material-icons star-icon">star</i>
-                                                        <i class="material-icons star-icon">star</i>
-                                                        <i class="material-icons star-icon">star</i>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                        
+                                                <input id="input-7-sm" name="input-7-sm"
+                                                            value="{!! intval($chamados[$i]->avaliacao) !!}"  
+                                                            onchange="processRating(this)"
+                                                            data-id="{!! intval($chamados[$i]->uid) !!}"
+                                                            data-show-caption="false"
+                                                            data-show-clear="false"  data-size="sm"
+                                                            class="rating " data-min="0" data-max="5" data-step="1" 
+                                                            >
                                         </div>
                                         <div class="float-child_invoice_eye"  onclick="getDetails('{!!$chamados[$i]->numero_chamado_interno!!}','{!!$chamados[$i]->numero_serial!!}')">
                                             <div class="text-secondary">&nbsp;</div>
@@ -431,24 +389,69 @@
 
 
     $(document).ready(function() {
-        $('.star-icon').each(function() {
-            $(this).hover(function() {
+        $('.star-icon').each(function() 
+        {
+            $(this).hover(function() 
+            {
                 $(this).prevAll().addBack().css("color", "#FFDF00");
-            }, function() {
-                if (!$(this).parent().attr("data-rating")) {
+            }, 
+            function() 
+            {
+                if (!$(this).parent().attr("data-rating")) 
+                {
                     $(this).prevAll().addBack().css("color", "lightgrey");
-                } else {
-                    $(this).siblings().addBack().each(function(index) {
+                } 
+                else 
+                {
+                    $(this).siblings().addBack().each(function(index) 
+                    {
                         index + 1 <= $(this).parent().attr("data-rating") ?
                             $(this).css("color", "#FFDF00") : $(this).css("color", "lightgrey");
                     });
                 }
-            }).click(function () {
+            })
+            .click(function () 
+            {
                 $(this).parent().attr("data-rating", $(this).prevAll().length + 1);
             });
         });
     });
 
+
+    function processRating(elem)
+    {
+        console.log(elem.value, elem.dataset.id);
+        let id = elem.dataset.id;
+        let rating = elem.value;
+        setRating(id,rating);
+    }
+
+    async function setRating(uid, rating)
+    {
+        let formData  = new FormData()
+           formData.append('_token','{!! @csrf_token() !!}');
+           formData.append('csrf','{!! @csrf_token() !!}');
+           formData.append('uid',uid);
+           formData.append('rating',rating);
+
+           const response = await fetch(
+               '{{route('chamados-rating')}}',
+               {
+                   method: 'POST',
+                   headers: {
+                       'x-rapidapi-host': 'carbonfootprint1.p.rapidapi.com',
+                       'x-rapidapi-key': 'your_api_key'
+                   },
+                   body: formData
+               }
+           );
+        const res = await response.text();
+        if(res)
+        {
+            console.log(res);
+
+        }
+    }   
 
 
 </script>

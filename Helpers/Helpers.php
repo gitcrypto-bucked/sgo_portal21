@@ -4,6 +4,8 @@ namespace Helpers;
 
 use App\Models\ClientesModel;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+
 
 class Helpers
 {
@@ -62,7 +64,7 @@ class Helpers
         }
         else
         {
-            return  asset('./empresas/lowcost.svg');
+            return  asset('./clientes/lowcost.svg');
         }
     }
 
@@ -133,12 +135,11 @@ class Helpers
 
     public  static function sanitizeString($string) {
 
-        $string = strtolower($string);
         // matriz de entrada
-        $what = array( 'ä','ã','à','á','â','ê','ë','è','é','ï','ì','í','ö','õ','ò','ó','ô','ü','ù','ú','û','À','Á','É','Í','Ó','Ú','ñ','Ñ','ç','Ç',' ','-','(',')',',',';',':','|','!','"','#','$','%','&','/','=','?','~','^','>','<','ª','º' );
+        $what = array( 'ä','ã','à','á','â','ê','ë','è','é','ï','ì','í','ö','õ','ò','ó','ô','ü','ù','ú','û','À','Á', 'Ã','É','Í','Ó','Ú','ñ','Ñ','ç','Ç','-','(',')',',',';',':','|','!','"','#','$','%','&','/','=','?','~','^','>','<','ª','º' );
 
         // matriz de saída
-        $by   = array( 'a','a','a','a','a','e','e','e','e','i','i','i','o','o','o','o','o','u','u','u','u','A','A','E','I','O','U','n','n','c','C','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_','_' );
+        $by   = array( 'a','a','a','a','a','e','e','e','e','i','i','i','o','o','o','o','o','u','u','u','u','A','A','ã','E','I','O','U','n','n','c','C',' ' );
 
         // devolver a string
         return str_replace($what, $by, $string);
@@ -276,6 +277,29 @@ class Helpers
             case 'pdf': case 'xls': case 'xlsx': case 'doc': case 'docx':
                 echo 'documento';
             break;     
+        }
+     }
+
+
+     public static function getHeaderClienteColor($client_ID)
+     {
+            return strlen(DB::table('sgo_cliente')->where('id_cliente','=',$client_ID)->get(['header'])[0]->header)
+                     ? DB::table('sgo_cliente')->where('id_cliente','=',$client_ID)->get(['header'])[0]->header : '#50986';
+     }
+
+     
+     public static function getTextClienteColor($client_ID)
+     {
+            return strlen(DB::table('sgo_cliente')->where('id_cliente','=',$client_ID)->get(['text'])[0]->text)
+                     ? DB::table('sgo_cliente')->where('id_cliente','=',$client_ID)->get(['text'])[0]->text : '#046b34';
+     }
+
+
+     public static function getItemType($item)
+     {
+        if(in_array($item,['IMPRESSORA','MULTIFUNCIONAL'])!=false)
+        {
+            return 'Printer';
         }
      }
 

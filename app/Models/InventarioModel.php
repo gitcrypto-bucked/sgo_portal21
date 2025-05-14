@@ -17,8 +17,9 @@ class InventarioModel extends Model
         //     ->where('clientes.id', '=', $cliente)
         //     ->groupByRaw('localidades.localidade, clientes.cliente')
         //     ->paginate(config('pagination.INVENTORIES'));
-
         //->distinct('sgo_equipamento.serial_equipamento')
+
+
         return DB::table('sgo_cliente')
                    ->selectRaw('sgo_localidade.nome_localidade, COUNT(sgo_equipamento.id_equipamento) as quantidade , sgo_cliente.nome_cliente, sgo_localidade.id_localidade')                   
                    ->join('sgo_localidade','sgo_localidade.id_cliente','=','sgo_cliente.id_cliente')
@@ -48,11 +49,11 @@ class InventarioModel extends Model
         //         GROUP BY c.cliente, l.localidade
         //         ');
 
-        return DB::select("SELECT DISTINCT c.nome_cliente, l.nome_localidade, count(e.id_equipamento) as total FROM 
+        return DB::select("SELECT DISTINCT c.nome_cliente, l.id_localidade, l.nome_localidade, count(e.id_equipamento) as total FROM 
                           sgo_cliente c 
                           LEFT JOIN sgo_localidade l on l.id_cliente= c.id_cliente
                           LEFT JOIN sgo_equipamento e ON e.id_localidade = l.id_localidade
-                          WHERE c.id_cliente='".$cliente."' GROUP BY c.nome_cliente, l.nome_localidade");
+                          WHERE c.id_cliente='".$cliente."' GROUP BY c.nome_cliente,  l.id_localidade, l.nome_localidade");
     }
 
     public function  getModelo($cliente)
@@ -111,21 +112,27 @@ class InventarioModel extends Model
         //                                 JOIN equipamentos e ON l.idLocalidade = e.idLocalidade
         //                                 WHERE l.localidade='".$localidade."')
         //                         ");
-
-        return DB::select("SELECT distinct sgo_equipamento.modelo_equipamento 
-                            FROM sgo_equipamento
-                            WHERE EXISTS 
-                            (
-                                SELECT * FROM sgo_localidade l 
-                                JOIN sgo_equipamento e ON l.id_localidade= e.id_localidade
-                                WHERE l.id_localidade='".$id_localidade."'
-                            )"
-                        );
+        
+        //@Deprected alterado 05/05
+        // return DB::select("SELECT distinct sgo_equipamento.modelo_equipamento 
+        //                     FROM sgo_equipamento
+        //                     WHERE EXISTS 
+        //                     (
+        //                         SELECT * FROM sgo_localidade l 
+        //                         JOIN sgo_equipamento e ON l.id_localidade= e.id_localidade
+        //                         WHERE l.id_localidade='".$id_localidade."'
+        //                     )"
+        //                 );
+        return DB::select(" SELECT distinct e.modelo_equipamento 
+                            FROM sgo_equipamento as e 
+                            JOIN sgo_localidade l ON l.id_localidade= e.id_localidade
+                            WHERE l.id_localidade=".$id_localidade);
+       
     }
-
 
     public function  getCentrosDeCusto($cliente)
     {
+        // ????
         return DB::table('users')->join('sgo_cliente','sgo_cliente.id_cliente','=','users.id_cliente')->value('cost_center');
     }
 

@@ -44,11 +44,12 @@
     <div class="container-xxl mobile px-4 mt-4 ">
         <h2 class="content-title pageName">Noticias</h2>
         <p class="pageText">Veja abaixo todas as noticias do mundo da tecnologia</p>
+      
             @if($agent->isMobile()!=false)
                 @foreach($news as $k=> $v)
                 <!--card-->
-                <div class="card mb-3" style="width: 18rem;">
-                    <img src="{{asset('storage/app/thumb_/'.$v->thumb)}}" class="card-img-top" alt="Sunset Over the Sea"/>
+                <div class=" card mb-3" style="width: auto;">
+                    <img src="{{asset('thumb_'.$v->thumb)}}" class="card-img-top" alt="" style="border-radius: 5px"/>
                     <div class="card-body">
                         <p class="mb-3 card-title border border-light" >
                             <small class="newsDate">{{Date('d/m/y', strtotime($v->created_at))}}&nbsp;</small><strong class="newsHeader text-break">{{$v->title}}</strong>
@@ -65,7 +66,7 @@
                 <div class="event-list">
                     @foreach($news as $k=> $v)
                     <div class="card flex-row">
-                        <img class="card-img-left img-fluid rounded" src="{{asset('storage/app/thumb_/'.$v->thumb)}}" alt="">
+                        <img class="card-img-left img-fluid rounded" src="{{asset('thumb/'.$v->thumb)}}" alt="" style="width: 137px !important">
                         <div class="card-body">
 {{--                            <h4 class=""><small class="newsDate">AUG 01 2021</small> <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed</p></h4>--}}
                             <p class="mb-3 card-title border border-light" >

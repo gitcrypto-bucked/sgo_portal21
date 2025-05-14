@@ -18,10 +18,9 @@ class GLPIerror
     /**
      * Create a new event instance.
      */
-    public function __construct(int $typeError, string $message, string $param1, string $param2)
+    public function __construct(int $typeError, string $param1, string $param2)
     {
         $this->typeError = $typeError;
-        $this->message = $message;
         $this->param1 = $param1;
         $this->param2 = $param2;
     }
@@ -41,7 +40,6 @@ class GLPIerror
 
 
     public $typeError;
-    public $message ;
     public $param1;
     public $param2;
 }

@@ -15,12 +15,23 @@ class TrackingController extends Controller
         {
             $id_equipamento = base64_decode($request->id_equipamento);
             $track = $model->getTrackingEquipamento($id_equipamento);
-            return view('tracking')->with('track', $track);
+            unset($model);
+
+            $model = new \App\Models\LocalidadeModel();
+            $localidades = $model->getLocalidadeByIdEquipamento($id_equipamento);
+            unset($model);
+            return view('tracking')->with('track', $track)->with('localidade',$localidades);
         }
         else
         {
             $track = $model->getTracking(Auth::user()->id_cliente);
-            return view('tracking')->with('track', $track);
+            unset($model);
+
+            $model = new \App\Models\LocalidadeModel();
+            $localidades =  $model->getLocalidadeByCliente(Auth::user()->id_cliente);
+            unset($model);
+
+            return view('tracking')->with('track', $track)->with('localidade',$localidades);
         }
        
     }

@@ -49,7 +49,7 @@
     <!--navbar -->
     <!--content-->
     <div class="container-xxl px-4 mt-4 mobile">
-        <h2 class="content-title pageName">Abir Chamado</h2>
+        <h2 class="content-title pageName" style="color: {!! \Helpers\Helpers::getTextClienteColor(Auth::user()->id_cliente)!!} !important">Abir Chamado</h2>
 
         @if($agent->isMobile()!=false)
             <div class="col-md-4">
@@ -120,7 +120,23 @@
                         </div>
                     @endif
                     @csrf
-                    <div class="form-floating mb-3">
+                    <div class="col mb-3">
+                        <label for="equipamento" class="form-label d-none d-lg-block">Equipamento</label>
+                            <select  class="form-control select2" id="equipamento" name="id_ativo_equipamento" 
+                                                                  data-hide-disabled="true" 
+                                                                  data-actions-box="true" 
+                                                                  data-virtual-scroll="false">
+                                @if(isset($inventario))
+                                    @for($i=0; $i<sizeof($inventario); $i++)
+                                        <option class="text-muted" id='{!! $inventario[$i]->id_equipamento !!}' value='{!! $inventario[$i]->id_ativo_equipamento !!}'>{!! $inventario[$i]->serial_equipamento !!} - {!! $inventario[$i]->modelo_equipamento !!}</option>
+                                    @endfor
+                                    @else
+                                        <option class="text-muted" selected value='{!! $modelo[0]->id_ativo_equipamento !!}'>{!! $modelo[0]->serial_equipamento !!} - {!! ucwords($modelo[0]->modelo_equipamento) !!}</option>
+                                    @endif
+                            </select>
+                       
+                    </div>
+                    <div class="form-floating mb-3 ">
                         <select class="form-select" id="level" name="level"  required>
                             <option  value="0">Alta</option>
                             <option  value="1">Média</option>
@@ -133,34 +149,25 @@
                         <input type="text" class="form-control" id="titulo" name="titulo" required >
                         <label for="name">Titulo</label>
                     </div>
-                    <div class="col mb-3">
-                        <label for="equipamento" class="form-label d-none d-lg-block">Equipamento</label>
-                       
-                            <select  class="form-control select2" id="equipamento" name="equipamento"data-hide-disabled="true" data-actions-box="true" data-virtual-scroll="false">
-                                @if(isset($inventario))
-                                    @for($i=0; $i<sizeof($inventario); $i++)
-                                        <option class="text-muted" value='{!! $inventario[$i]->serial_equipamento !!}'>{!! $inventario[$i]->serial_equipamento !!} - {!! $inventario[$i]->modelo_equipamento !!}</option>
-                                    @endfor
-                                    @else
-                                        <option class="text-muted" selected value='{!! $modelo[0]->serial_equipamento !!}'>{!! $modelo[0]->serial_equipamento !!} - {!! ucwords($modelo[0]->modelo_equipamento) !!}</option>
-                                    @endif
-                            </select>
-                       
-                    </div>
-
-                  
-
-                        <div class="form-floating mb-3">
-                            <textarea  class="form-control" id="descricao" name="descricao"    rows="10" style="height: 160px"></textarea>
-                            <label for="centrocusto">Descriçao</label>
-                        </div>
 
                     <div class="form-floating mb-3">
-                        <input class="form-control" type="file" id="formFile" name="files[]" accept=
-                        "image/* , image/jpeg,image/gif,image/png,application/pdf,image/x-eps .csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"" multiple onchange="checkFiles(this.files)">
+                        <textarea  class="form-control" id="descricao" name="descricao"    rows="10" style="height: 160px"></textarea>
+                        <label for="centrocusto">Descriçao</label>
                     </div>
 
-
+                    <div class="form-floating mb-3">
+                        <input class="form-control" type="file" id="formFile" name="files[]" 
+                        accept=
+                        "image/* , 
+                        image/jpeg,
+                        image/gif,
+                         image/png,
+                         application/pdf,
+                         image/x-eps .csv,
+                         application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, 
+                         application/vnd.ms-excel" multiple
+                          onchange="checkFiles(this.files)">
+                    </div>
                     <div class="mb-3 form-group">
                         <button type="submit" class="btn btn-primary mb-2"  name='submit' >Cadastrar</button>
                         <button type="reset" class="btn btn-danger btn-lg-danger bg-danger mb-2" >Cancelar</button>
@@ -184,7 +191,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
         integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
         crossorigin="anonymous">
-
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
@@ -194,19 +200,24 @@
     function checkFiles(files)
     {       
         console.log(files); 
-        if(files.length===3) {
-
-        let list = new DataTransfer;
-        for(let i=0; i<3; i++)
-           list.items.add(files[i]) 
-
+        if(files.length===3 || files.length<=3)
+        {
+            let list = new DataTransfer;
+            for(let i=0; i<3; i++)
+            {
+                list.items.add(files[i]) 
+            }
             document.getElementById('files').files = list.files
         }       
-        else if(files.length<3) 
+        else if(files.length>3) 
         {
-            alert("Escolha somente 3 arquivos"); return;
+            alert("Escolha somente 3 arquivos"); 
+            document.getElementById('files').files = [];
+            return;
         }    
-    }
+    } 
+    
+
 </script>
 </body>
 </html>

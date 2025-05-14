@@ -126,7 +126,7 @@ class menuController extends Controller
     {
         $menuHeader = '';
         if (Auth::check()) {
-            $menuHeader = '<a href = "#" class="m-0" ><img src ="' . ( Helpers::getUserCompanyLogo(Auth::user()->id_cliente)) . '" width = "137" class=" ml-2 logo_desktop" ></a >
+            $menuHeader = '<a href = "#" class="m-0" ><img src ="' . ( Helpers::getUserCompanyLogo(Auth::user()->id_cliente)) . '" width = "137" class=" ml-1 logo_desktop" style="border: 1px solid" ></a >
             <p class="text-black lh-1  m-1 userDesktop" >
                 <strong class="text-white ml-2" >' .
                 Auth::user()->name.

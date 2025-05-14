@@ -35,7 +35,7 @@
     <!--navbar -->
     <!--content-->
     <div class="container-xxl mobile mt-2">
-        <h2 class="content-title pageName mt-2 py-4">Carga de Dados - Faturamento</h2>
+        <h2 class="content-title pageName mt-2 py-4" style="color: {!! \Helpers\Helpers::getTextClienteColor(Auth::user()->id_cliente)!!} !important">Carga de Dados - Faturamento</h2>
         <p class="pageText"></p>
         @if($agent->isMobile()!=false)
             <form method="POST" action="{{route('uploadInvoice')}}" enctype="multipart/form-data"  class="form_upload">

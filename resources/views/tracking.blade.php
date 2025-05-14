@@ -37,9 +37,8 @@
     <!--navbar -->
     @include('components.navwrapper')
     <!--content-->
-
     <div class="container-xxl mt-4 mobile ">
-        <h2 class="content-title pageName">Tracking</h2>
+        <h2 class="content-title pageName" style="color: {!! \Helpers\Helpers::getTextClienteColor(Auth::user()->id_cliente)!!} !important">Tracking</h2>
         <p class="pageText"></p>
 
         <div class="row gx-5 gy-3 mt-3 ">
@@ -56,9 +55,16 @@
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Localidade:</label>
                     <div class="input-group mb-3">
-                        <label class="input-group-text" for="inputGroupSelect0"><i class="fa fa-map-marker" aria-hidden="true"></i></label>
-                        <select class="form-select" id="inputGroupSelect0">
+                        <label class="input-group-text" for="localidade" ><i class="fa fa-map-marker" aria-hidden="true"></i></label>
+                        <select class="form-select" id="localidade" name='localidade'>
                             <option selected>Escolha...</option>
+                            @if(gettype($localidade)=='array' || gettype($localidade)=='object' && sizeof($localidade)>1) 
+                                @for($i=0; $i< sizeof($localidade); $i++)
+                                    <option value="{!! $localidade[$i]->id_localidade !!}">{!! ucwords(strtolower( \Helpers\Helpers::sanitizeString( $localidade[$i]->nome_localidade))) !!}</option>
+                                @endfor
+                            @else
+                                <option selected value="{!! $localidade[0]->id_localidade !!}">{!! ucwords(strtolower( $localidade[0]->nome_localidade)) !!}</option>
+                            @endif
                         </select>
                     </div>
                 </div>
@@ -85,6 +91,7 @@
 
         </div>
     </div>
+
     <!--table-->
     @php($entrgues =0)
     @php($ongo =0)
@@ -115,8 +122,8 @@
                                 <ul class="column_content" onclick="getDetails('{!! $track[$i]->nfe_rastreamento !!}')">
                                     <li><span class="dot_cancelado" style="background-color: #f9d030 !important"></span></li>
                                     <li><p class="text-center li_text">NF: {!! $track[$i]->nfe_rastreamento !!} </p></li>
-                                    <li><p class="text-center li_normal">Postado: {!! date('d/m/Y', strtotime(str_replace('-','/',$track[$i]->data_faturamento_rastreamento))) !!}</p></li>
-                                    <li><p class="text-center li_normal_end">Previsão entrega: {!! date('d/m/Y', strtotime(str_replace('-','/',$track[$i]->previsao_entrega_rastreamento))) !!}</p></li>
+                                    <li><p class="text-center li_normal">Postado: {!! \Helpers\Helpers::formatDate($track[$i]->data_faturamento_rastreamento) !!}</p></li>
+                                    <li><p class="text-center li_normal_end">Previsão entrega: {!!  \Helpers\Helpers::formatDate($track[$i]->previsao_entrega_rastreamento) !!}</p></li>
                                 </ul>
                                 </ul>
                             @endif
@@ -133,8 +140,8 @@
                             <ul class="column_content " onclick="getDetails('{!! $track[$i]->nfe_rastreamento !!}')">
                             <li><span class="dot_cancelado" style="background-color: #e43d40 !important"></span></li>
                             <li><p class="text-center li_text">NF: {!! $track[$i]->nfe_rastreamento !!} </p></li>
-                            <li><p class="text-center li_normal">Postado: {!! date('d/m/Y', strtotime(str_replace('-','',$track[$i]->data_faturamento_rastreamento))) !!}</p></li>
-                            <li><p class="text-center li_normal_end">Previsão entrega: {!!  date('d/m/Y', strtotime(str_replace('-','/',$track[$i]->previsao_entrega_rastreamento)))  !!}</p></li>
+                            <li><p class="text-center li_normal">Postado: {!!  \Helpers\Helpers::formatDate($track[$i]->data_faturamento_rastreamento) !!}</p></li>
+                            <li><p class="text-center li_normal_end">Previsão entrega: {!!   \Helpers\Helpers::formatDate($track[$i]->previsao_entrega_rastreamento) !!}</p></li>
 {{--                            <li><p class="text-center li_normal_end">Localidade 1</p></li>--}}
                             </ul>
                         @endif
@@ -149,8 +156,8 @@
                                 <ul class="column_content" onclick="getDetails('{!! $track[$i]->nfe_rastreamento !!}')">
                                     <li><span class="dot_entregue"></span></li>
                                     <li><p class="text-center li_text">NF: {!! $track[$i]->nfe_rastreamento !!} </p></li>
-                                    <li><p class="text-center li_normal">Postado: {!! date('d/m/Y', strtotime(str_replace('-','',$track[$i]->data_faturamento_rastreamento))) !!}</p></li>
-                                    <li><p class="text-center li_normal">Previsão entrega: {!!  date('d/m/Y', strtotime(str_replace('-','/',$track[$i]->previsao_entrega_rastreamento))) !!}</p></li>
+                                    <li><p class="text-center li_normal">Postado: {!! \Helpers\Helpers::formatDate($track[$i]->data_faturamento_rastreamento) !!}</p></li>
+                                    <li><p class="text-center li_normal">Previsão entrega: {!!  \Helpers\Helpers::formatDate($track[$i]->previsao_entrega_rastreamento)  !!}</p></li>
                                     <li><p class="text-center li_normal_end">Data entrega:  @if(strpos($track[$i]->data_entrega_rastreamento,'0000-00-00 00:00:00')===false) {!! date('d/m/Y', strtotime(str_replace('-','',$track[$i]->data_entrega_rastreamento))) !!} @else{!! "----" !!} @endif</p></li>
     {{--                                <li><p class="text-center li_normal_end">Localidade 1</p></li>--}}
                                 </ul>

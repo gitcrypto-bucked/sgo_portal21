@@ -286,7 +286,7 @@
                         <div class="col-md-6">
                             <label for="localidade" class="form-label d-none d-lg-block">Localidade</label>
                             <select  class="form-control select2" id="localidade" name="localidade"data-hide-disabled="true" data-actions-box="true" data-virtual-scroll="false">
-                                <option class="text-muted" selected>{!! ucwords($localidade) !!}</option>
+                                <option class="text-muted" selected>{!! ucwords(strtolower($localidade)) !!}</option>
                             </select>
                         </div>
 
@@ -296,10 +296,10 @@
                                 @if(gettype($modelo)=='array')
                                     <option value="">Selecione</option>
                                     @for($i=0; $i< sizeof($modelo); $i++)
-                                        <option class="text-muted" @if(isset($model)) selected @endif">{!! $modelo[$i]->modelo_equipamento !!}</option>
+                                        <option class="text-muted" @if(isset($model)) selected @endif>{!!  ucwords($modelo[$i]->modelo_equipamento) !!}</option>
                                     @endfor
                                 @else
-                                    <option class="text-muted">{!! $modelo!!}</option>
+                                    <option class="text-muted" selected>{!! ucwords($modelo) !!}</option>
                                 @endif
                             </select>
                           
@@ -308,9 +308,13 @@
                             <label for="serial" class="form-label d-none d-lg-block">Serial</label>
                             <select  class="form-control select2" id="serial" name="serial" data-hide-disabled="true" data-actions-box="true" data-virtual-scroll="false">
                                 <option value="">Selecione</option>
-                                @for($i=0; $i< sizeof($serial); $i++)
-                                    <option class="text-muted">{!! strlen(@ $serial[$i]->serial_equipamento)?  @$serial[$i]->serial_equipamento: $serial[$i] !!}</option>
-                                @endfor
+                                @if(gettype($serial)=='array')
+                                    @for($i=0; $i< sizeof($serial); $i++)
+                                        <option class="text-muted">{!! strlen(@ $serial[$i]->serial_equipamento)?  @$serial[$i]->serial_equipamento: $serial[$i] !!}</option>
+                                    @endfor
+                                @else
+                                         <option class="text-muted" selected>{!! $serial !!}</option>
+                                @endif
                             </select>
                         </div>
                         <div class="col-sm-3">
@@ -430,7 +434,7 @@
                                         <button type="button" class="btn btn-info mb-3 rounded-1 @if(isset(Auth::user()->abrir_chamado) && boolval(Auth::user()->abrir_chamado)) d-block @else d-none @endif" 
                                             class="btn btn-secondary"  onclick="abrirChamado('{!! $inventario[$i]->serial_equipamento!!}','{{ $inventario[$i]->id_localidade }}')"
                                             data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Chamado">
-                                            <i class="fa fa-gear  fa-lg" style="color:white"></i>
+                                            <i class="fa fa-wrench  fa-lg" style="color:white"></i>
                                         </button>
                                         <button type="button" class="btn btn-info mb-3 mt-3 rounded-1" 
                                             class="btn btn-secondary"   data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Rastreamento"

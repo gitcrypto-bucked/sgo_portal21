@@ -16,7 +16,7 @@ body
 
     /*!* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ *!*/
     /*background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));*/
-    background: url('3434545345.webp');
+    background: url('9879570347374957496540.webp');
     /* Center and scale the image nicely */
     background-position: center;
     background-repeat: no-repeat;
@@ -83,12 +83,15 @@ input::placeholder {
 
 .bg-dark-alt
 {
-    background-color: var(--login-pane) !important;
+    /**background-color: var(--login-pane) !important; **/
+    background-color:  #223c60
+    !important;
 }
 
 .round-btn
 {
-        background-color: var(--primart-btn);
+    /* background-color: var(--primart-btn); */
+    background-color: #009DBD !important;
     width: 200px;
     border-radius: 15px ;
 }
