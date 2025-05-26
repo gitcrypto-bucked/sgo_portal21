@@ -63,9 +63,9 @@ Route::middleware('auth',AutoTimeout::class)->group(function ()
 
     Route::match(['get'],'/faturamento_details','App\Http\Controllers\Invoice@getDetailsFaturamento')->name('faturamento_details');
 
-    Route::match(['get'],'/dash_faturamento','App\Http\Controllers\Invoice@getDashFaturamento')->name('dash_faturamento');
+    Route::match(['get','post'],'/dash_faturamento','App\Http\Controllers\DashController@getDashboardFaturamento')->name('dash_faturamento');
 
-    Route::match(['get'],'/dash_chamados', "App\Http\Controllers\Chamados@getDashboardChamados")->name('dash_chamados');
+    Route::match(['get','post'],'/dash_chamados', "App\Http\Controllers\DashController@getDashboardChamados")->name('dash_chamados');
 
     Route::match(['get'],'/inventario_details','App\Http\Controllers\Inventario@getInventarioDetails')->name('inventario_details');
 
@@ -143,3 +143,5 @@ Route::match(['post'], '/remove-notification', '\App\Http\Controllers\Notificati
 Route::match(['post'],'/chamados-rating','\App\Http\Controllers\Chamados@setRating')->name('chamados-rating');
 
 Route::match(['post'],'/cliente_color','\App\Http\Controllers\ClienteController@setColor')->name('cliente_color');
+
+Route::match(['post'],'/faturamento-detalhes','App\Http\Controllers\Invoice@getFaturamentoDetalhesEquipamento')->name('faturamento-detalhes');

@@ -48,17 +48,27 @@ class graphModel extends Model
         return DB::select( $SQL);
     }
 
-    public function getDataChamados($idCliente, $periodo_inicio='09-23-24', $periodo_fim= '10-22-24')
+    public function getDataChamados($id_cliente, $periodo_inicio, $periodo_fim)
     {
-        return DB::select('SELECT a.periodo_fim,
-                                (SELECT count(b.sla)FROM chamados b  WHERE b.sla="DENTRO" ) as DENTRO ,
-                                (SELECT count(c.sla)FROM chamados c  WHERE c.sla="FORA" ) as FORA
-                             FROM chamados a
-                             JOIN localidades l ON a.localidade = l.localidade
-                             JOIN clientes e ON l.idCliente=e.idCliente
-                             WHERE e.id=55
-                             AND (periodo_fim BETWEEN "'.$periodo_inicio.'" AND "'.$periodo_fim.'")
-                             GROUP By a.periodo_fim');
+        //Deprecated 16/05/2025
+        // return DB::select('SELECT a.periodo_fim,
+        //                         (SELECT count(b.sla)FROM chamados b  WHERE b.sla="DENTRO" ) as DENTRO ,
+        //                         (SELECT count(c.sla)FROM chamados c  WHERE c.sla="FORA" ) as FORA
+        //                      FROM chamados a
+        //                      JOIN localidades l ON a.localidade = l.localidade
+        //                      JOIN clientes e ON l.idCliente=e.idCliente
+        //                      WHERE e.id=55
+        //                      AND (periodo_fim BETWEEN "'.$periodo_inicio.'" AND "'.$periodo_fim.'")
+        //                      GROUP By a.periodo_fim');
+
+        return DB::select(' SELECT a.data_criacao,
+                            (SELECT count(b.status) FROM sgo_chamado as b WHERE b.status="ABERTO") as ABERTO,
+                            (SELECT count(c.status) FROM sgo_chamado as c WHERE c.status="FECHADO") AS FECHADO
+                         FROM sgo_chamado as a 
+                         JOIN sgo_clientes as s ON a.cliente LIKE s.nome_cliente
+                         WHERE s.id_cliente='.$id_cliente.' AND 
+                         (a.data_cricao BETWEEN "'.$periodo_inicio.'" AND "'.$periodo_fim.'" )
+                         GROUP BY a.data_cricao');
      }
 
 

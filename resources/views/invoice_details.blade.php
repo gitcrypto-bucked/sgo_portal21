@@ -133,38 +133,38 @@
                             <div class="float-container">
                                 <div class="float-child_invoice">
                                     <div class="text-secondary">Localidade</div>
-                                    <div class="green"><abbr title="HyperText Markup Language" class="initialism">{!! strtoupper($invoice[$i]->localidade) !!}</abbr></div>
+                                    <div class="green"><abbr title="HyperText Markup Language" class="initialism">{!! strtoupper($invoice[$i]->nome_localidade) !!}</abbr></div>
                                 </div>
 
                                 <div class="float-child_invoice_serial">
                                     <div class="text-secondary">Serial</div>
-                                    <div class="green"><abbr title="HyperText Markup Language" class="initialism">{!! strtoupper($invoice[$i]->serial) !!}</abbr></div>
+                                    <div class="green"><abbr title="HyperText Markup Language" class="initialism">{!! strtoupper($invoice[$i]->serial_equipamento) !!}</abbr></div>
                                 </div>
 
                                 <div class="float-child_invoice_details">
                                     <div class="text-secondary">Login</div>
-                                    <div class="green"><abbr title="HyperText Markup Language" class="initialism">{!!  $invoice[$i]->login !!}</abbr></div>
+                                    <div class="green"><abbr title="HyperText Markup Language" class="initialism">{!!  $invoice[$i]->login_faturamento !!}</abbr></div>
 
                                 </div>
 
                                 <div class="float-child_invoice_servico">
                                     <div class="text-secondary">Grupo de Serviço</div>
-                                    <div class="green"><abbr title="HyperText Markup Language" class="initialism">{!! $invoice[$i]->grupo_servico !!}</abbr></div>
+                                    <div class="green"><abbr title="HyperText Markup Language" class="initialism">{!! $invoice[$i]->grupo_descricao_servico_faturamento !!}</abbr></div>
                                 </div>
 
                                 <div class="float-child_invoice_cdc">
                                     <div class="text-secondary">C.D.C</div>
-                                    <div class="green"><abbr title="HyperText Markup Language" class="initialism">{!! $invoice[$i]->cdc !!}</abbr></div>
+                                    <div class="green"><abbr title="HyperText Markup Language" class="initialism">{!! $invoice[$i]->cdc_faturamento !!}</abbr></div>
                                 </div>
 
                                 <div class="float-child_invoice_periodo">
                                     <div class="text-secondary">Vol. Página</div>
-                                    <div class="green"><abbr title="HyperText Markup Language" class="initialism">{!! (floatval($invoice[$i]->volume)/100.00)*(floatval($invoice[$i]->cobrado)) !!}</abbr></div>
+                                    <div class="green"><abbr title="HyperText Markup Language" class="initialism">{!! (floatval($invoice[$i]->volume_faturamento)/100.00)*(floatval($invoice[$i]->cobrado_faturamento)) !!}</abbr></div>
                                 </div>
 
                                 <div class="float-child_invoice_details">
-                                    <div class="text-secondary">Vol. Total</div>
-                                    <div class="green"><abbr title="HyperText Markup Language" class="initialism">{!!'R$ '.number_format($invoice[$i]->cobrado,2,",","."); !!}</abbr></div>
+                                    <div class="text-secondary">Val. Total</div>
+                                    <div class="green"><abbr title="HyperText Markup Language" class="initialism">{!!'R$ '.number_format($invoice[$i]->cobrado_faturamento,2,",","."); !!}</abbr></div>
                                 </div>
 
                             </div>

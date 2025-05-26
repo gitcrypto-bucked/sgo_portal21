@@ -38,67 +38,79 @@ class ImportInvoiceCSVListener
         $ok = false;
         for($i = 1; $i < count($data); $i++)
         {
-
-            if(!empty($data[$i]))
+            if(!empty($data[$i]) && gettype($data[$i])!="boolean")
             {
-                $SQL ="INSERT INTO www_portal.faturamento
-                    (
-                     periodo_inicio,
-                     periodo_fim,
-                     uni_fat,
-                     une,
-                     depto,
-                     cdc,
-                     nome,
-                     login,
-                     cliente,
-                     localidade,
-                     serial,
-                     fila,
-                     cod_servico,
-                     servico,
-                     grupo_servico,
-                     cobrado,
-                     qtde_duplex,
-                     volume,
-                     tarifado,
-                     rateado,
-                     rateio,
-                     valor_unit,
-                     valor_total,
-                     total_percent,
-                     proporcional,
-                     total_geral,
-                     created_at)";
-
-                $SQL.="VALUES('".$data[$i][0]."','"
-                    .$data[$i][1]."','"
-                    .$data[$i][2]."','"
-                    .$data[$i][3]."','"
-                    .$data[$i][4]."','"
-                    .$data[$i][5]."','"
-                    .$data[$i][6]."','"
-                    .$data[$i][7]."','"
-                    .$data[$i][8]."','"
-                    .$data[$i][9]."','"
-                    .$data[$i][10]."','"
-                    .$data[$i][11]."','"
-                    .$data[$i][12]."','"
-                    .$data[$i][13]."','"
-                    .$data[$i][14]."','"
-                    .$data[$i][15]."','"
-                    .$data[$i][16]."','"
-                    .$data[$i][17]."','"
-                    .$data[$i][18]."','"
-                    .$data[$i][19]."','"
-                    .$data[$i][20]."','"
-                    .floatval($data[$i][21])."','"
-                    .floatval($data[$i][22])."','"
-                    .$data[$i][23]."','"
-                    .$data[$i][24]."','"
-                    .floatval($data[$i][25])."','"
-                    .date('Y-m-d H:i:s')."')";
-                $ok= DB::unprepared($SQL);
+              
+                $SQL = "INSERT IGNORE INTO sgo_faturamento  ";
+                $SQL.= "(
+                        periodo,
+                        periodo_cobranca_inicio,
+                        periodo_cobranca_fim,
+                        uni_faturamento,
+                        une_faturamento,
+                        departamento_faturamento,
+                        cdc_faturamento,
+                        nome_faturamento,
+                        login_faturamento,
+                        id_localidade,
+                        id_equipamento,
+                        
+                        fila_faturamento,
+                        codigo_servico_faturamento,
+                        descricao_servico_faturamento,
+                        grupo_descricao_servico_faturamento,
+                        
+                        cobrado_faturamento,
+                        quantidade_duplex_faturamento,
+                        volume_faturamento,
+                        
+                        tarifado_faturamento,
+                        rateado_faturamento,
+                        rateio_faturamento,
+                        
+                        valor_unitario_faturamento,
+                        valor_total_faturamento,
+                        valor_total_porcento_faturamento,
+                        
+                        proporcional_faturamento,
+                        valor_total_geral_faturamento,
+                        data_criacao
+                      )";
+                $SQL.= " VALUES ('".PHP_EOL.
+                          date('Y-m-d', strtotime($data[$i][0]))."' , '".PHP_EOL.
+                          date('Y-m-d', strtotime(str_replace('/','-',$data[$i][1])))."' , '".PHP_EOL.
+                          date('Y-m-d', strtotime(str_replace('/','-',$data[$i][2])))."' , '".PHP_EOL.
+                          ucfirst($data[$i][3])."' , '".PHP_EOL.
+                          ucfirst($data[$i][4])."' , '".PHP_EOL.
+                          ucfirst($data[$i][5])."' , '".PHP_EOL.
+                          strval($data[$i][6])."' , '".PHP_EOL.
+                          ucfirst($data[$i][7])."' , '".PHP_EOL.
+                          ucfirst($data[$i][8])."' , ".PHP_EOL.
+                          $this->getIdlocalidade($data[$i][10])." , ".PHP_EOL.
+                          $this->getIdEquipamento($data[$i][11])." , '".PHP_EOL.
+                          
+                          strval($data[$i][12])."' , '".PHP_EOL.
+                          strval($data[$i][13])."' , '".PHP_EOL.
+                          strval($data[$i][14])."' , '".PHP_EOL.
+                          strval($data[$i][15])."' , '".PHP_EOL.
+                          
+                          number_format(floatval($this->format($data[$i][16])),2)."' , '".PHP_EOL.
+                          number_format(floatval($this->format($data[$i][17])),2)."' , '".PHP_EOL.
+                          number_format(floatval($this->format($data[$i][18])),2)."' , '".PHP_EOL.
+                          
+                          number_format(floatval($this->format($data[$i][19])),2)."' , '".PHP_EOL.
+                          number_format(floatval($this->format($data[$i][20])),2)."' , '".PHP_EOL.
+                          number_format(floatval($this->format($data[$i][21])),2)."' , '".PHP_EOL.
+                          
+                          number_format(floatval($this->format($data[$i][22])),2)."' , '".PHP_EOL.
+                          number_format(floatval($this->format($data[$i][23])),2)."' , '".PHP_EOL.
+                          number_format(floatval($this->format($data[$i][24])),2)."' , '".PHP_EOL.
+                          
+                          number_format(floatval($this->format($data[$i][25])),2)."' , '".PHP_EOL.
+                          number_format(floatval($this->format($data[$i][26])),2)."' , '".PHP_EOL.
+                          date('Y-m-d H:i:s')."' ) ".PHP_EOL;
+                          ;
+                  $ok= DB::unprepared($SQL);
             }
             else
             {
@@ -112,7 +124,6 @@ class ImportInvoiceCSVListener
             $notification->addNewNotification('Seu arquivo foi processado com sucesso','system',Auth::user()->email);
             try {
                 $this->sendNewUserMail(Auth::user()->email,Auth::user()->name);
-                Artisan::addCommands('optimize:clear');
             }
             catch (\Exception $exception)
             {
@@ -259,6 +270,32 @@ class ImportInvoiceCSVListener
         } else {
             return true;
         }
+    }
+
+
+    function getIdlocalidade($localidade)
+    {
+      $SQL = "SELECT id_localidade FROM sgo_localidade WHERE nome_localidade LIKE '".$localidade."'";	
+      $row = DB::table('sgo_localidade')->where('nome_localidade','LIKE',$localidade)->get(['id_localidade']);
+      #var_dump($row["id_localidade"]);exit;
+      return intval($row[0]->id_localidade);
+    }
+
+
+    function getIdEquipamento($serial)
+    {
+        $SQL ="SELECT id_equipamento FROM sgo_equipamento WHERE serial_equipamento LIKE '".$serial."'";
+        $row = DB::table('sgo_equipamento')->where('serial_equipamento','LIKE',$serial)->get(['id_equipamento']);
+        return intval($row[0]->id_equipamento);
+
+    }
+
+    function format($str)
+    {
+        $str =str_replace(" R$","",$str);
+        $str =str_replace(" * ","",$str);
+        $str =str_replace("_-","",$str);
+        return $str;
     }
 
     /** @var string configurações do servidor de email */

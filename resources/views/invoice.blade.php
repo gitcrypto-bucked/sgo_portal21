@@ -65,9 +65,9 @@
         <div class="row px-2">
             <table class="table_list">
                 @for($i=0; $i<sizeof($invoice); $i++)
-                    <tr class="card my-2" onclick="getDetails('{!! $invoice[$i]->periodo_inicio !!}','{!! $invoice[$i]->periodo_fim !!}', {!! $invoice[$i]->cobrado !!})">
+                    <tr class="card my-2" onclick="getDetails('{!! $invoice[$i]->periodo_cobranca_inicio !!}','{!! $invoice[$i]->periodo_cobranca_fim !!}', {!! $invoice[$i]->cobrado !!})">
                         <td class="card-header d-flex justify-content-between" >
-                            <abbr title="HyperText Markup Language" class="initialism_alt">{!! 'Outsourcing '.\Helpers\Helpers::formatDate($invoice[$i]->periodo_inicio).' até '.\Helpers\Helpers::formatDate($invoice[$i]->periodo_fim); !!}</abbr>
+                            <abbr title="HyperText Markup Language" class="initialism_alt">{!! 'Outsourcing '.\Helpers\Helpers::formatDate($invoice[$i]->periodo_cobranca_inicio).' até '.\Helpers\Helpers::formatDate($invoice[$i]->periodo_cobranca_fim); !!}</abbr>
                         </td>
                         <td class="d-flex justify-content-between px-3">
                             <div style="">
@@ -77,17 +77,17 @@
                             </div>
 {{--                            <div>--}}
 {{--                                <div class="text-secondary">Início do Perído</div>--}}
-{{--                                <div class="green"><abbr title="HyperText Markup Language" class="initialism">{!!  "  ".\Helpers\Helpers::formatDate($invoice[$i]->periodo_inicio); !!}</abbr>--}}
+{{--                                <div class="green"><abbr title="HyperText Markup Language" class="initialism">{!!  "  ".\Helpers\Helpers::formatDate($invoice[$i]->periodo_cobranca_inicio); !!}</abbr>--}}
 {{--                                </div>--}}
 {{--                            </div>--}}
 {{--                            <div >--}}
 {{--                                <div class="text-secondary">Término do Periodo</div>--}}
-{{--                                <div class="green"><abbr title="HyperText Markup Language" class="initialism">{!! "  ".\Helpers\Helpers::formatDate($invoice[$i]->periodo_fim); !!}</abbr></div>--}}
+{{--                                <div class="green"><abbr title="HyperText Markup Language" class="initialism">{!! "  ".\Helpers\Helpers::formatDate($invoice[$i]->periodo_cobranca_fim); !!}</abbr></div>--}}
 {{--                            </div>--}}
-                            <div class="float-child_status">
+                            <div class="float-child_status_faturamento">
 
-                                @if($invoice[$i]->status =='aberto' ||$invoice[$i]->status =="" )
-                                    <a class=" status_aberto   tn-lg " style="background-color: #18a558 !important;" >Fechado</a>
+                                @if($invoice[$i]->status_faturamento =='aberto' ||$invoice[$i]->status_faturamento =="" )
+                                    <a class=" status_faturamento_aberto   tn-lg " style="background-color: #18a558 !important;" >Fechado</a>
                                 @else
                                 @endif
                             </div>
@@ -129,11 +129,11 @@
                     <table class="table_list">
                         @for($i=0; $i<sizeof($invoice); $i++)
                             <tr class="card my-2">
-                                <td class="card-header" onclick="getDetails('{!! $invoice[$i]->periodo_inicio !!}','{!! $invoice[$i]->periodo_fim !!}', {!! $invoice[$i]->cobrado !!})">
+                                <td class="card-header" onclick="getDetails('{!! $invoice[$i]->periodo_cobranca_inicio !!}','{!! $invoice[$i]->periodo_cobranca_fim !!}', {!! $invoice[$i]->cobrado !!})">
                                     <div class="float-container">
                                         <div class="float-child_invoice">
                                             <div class="text-secondary">Serviço</div>
-                                            <div class="green"><abbr title="HyperText Markup Language" class="initialism_alt">{!! 'Outsourcing '.\Helpers\Helpers::formatDate($invoice[$i]->periodo_inicio).' até '.\Helpers\Helpers::formatDate($invoice[$i]->periodo_fim); !!}</abbr></div>
+                                            <div class="green"><abbr title="HyperText Markup Language" class="initialism_alt">{!! 'Outsourcing '.\Helpers\Helpers::formatDate($invoice[$i]->periodo_cobranca_inicio).' até '.\Helpers\Helpers::formatDate($invoice[$i]->periodo_cobranca_fim); !!}</abbr></div>
                                         </div>
 
                                         <div class="float-child_invoice_valor">
@@ -143,20 +143,21 @@
 
                                         <div class="float-child_invoice_periodo">
                                             <div class="text-secondary">Início do Perído</div>
-                                            <div class="green"><abbr title="HyperText Markup Language" class="initialism">{!!  "  ".\Helpers\Helpers::formatDate($invoice[$i]->periodo_inicio); !!}</abbr></div>
+                                            <div class="green"><abbr title="HyperText Markup Language" class="initialism">{!!  "  ".\Helpers\Helpers::formatDate($invoice[$i]->periodo_cobranca_inicio); !!}</abbr></div>
 
                                         </div>
 
                                         <div class="float-child_invoice_periodo">
                                             <div class="text-secondary">Término do Periodo</div>
-                                            <div class="green"><abbr title="HyperText Markup Language" class="initialism">{!! "  ".\Helpers\Helpers::formatDate($invoice[$i]->periodo_fim); !!}</abbr></div>
+                                            <div class="green"><abbr title="HyperText Markup Language" class="initialism">{!! "  ".\Helpers\Helpers::formatDate($invoice[$i]->periodo_cobranca_fim); !!}</abbr></div>
                                         </div>
 
                                         <div class="float-child_status">
 
-                                            @if($invoice[$i]->status =='aberto' ||$invoice[$i]->status =="" )
+                                            @if($invoice[$i]->status_faturamento !='aberto' ||$invoice[$i]->status_faturamento =="" )
                                                 <a class=" status_aberto  mt-2  tn-lg " style="background-color: #18a558 !important;" >Fechado</a>
                                             @else
+                                                <a class=" status_aberto  mt-2  tn-lg " style="background-color: #db1f48 !important;" >Aberto</a>
                                             @endif
                                         </div>
                                     </div>
@@ -190,9 +191,9 @@
 <script>
 
     //show labels into select for mobile
-    function  getDetails(periodo_inicio, periodo_fim, total)
+    function  getDetails(periodo_cobranca_inicio, periodo_cobranca_fim, total)
     {
-            URL = "{!! route('faturamento_details') !!}"+"?periodo_inicio="+btoa(periodo_inicio)+"&periodo_fim="+btoa(periodo_fim)+"&total="+btoa(total)+"&_token={!! @csrf_token() !!}";
+            URL = "{!! route('faturamento_details') !!}"+"?periodo_cobranca_inicio="+btoa(periodo_cobranca_inicio)+"&periodo_cobranca_fim="+btoa(periodo_cobranca_fim)+"&total="+btoa(total)+"&_token={!! @csrf_token() !!}";
             window.location.href=URL;
     }
 </script>

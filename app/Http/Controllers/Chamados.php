@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+
 ini_set( 'post_max_size' , '28M' );
 ini_set('upload_max_filesize','20M');
 //###GLPI METHODS
@@ -26,11 +27,10 @@ class Chamados extends Controller
    
     public function index()
     {
-        #return view('chamados-upload');
-         echo 'disabled'; exit;
+       return view('chamados-upload');
     }
 
-    //redireciona para a view
+    //redireciona para a view--
     public function abrirChamados(Request $request)
     {
         $model = new InventarioModel();
@@ -46,6 +46,7 @@ class Chamados extends Controller
         }
     }
 
+    //--abre novo chamado--
     public function novoChamados(Request $request)
     {
         // array:7 [▼ // app\Http\Controllers\Chamados.php:51
@@ -198,6 +199,7 @@ class Chamados extends Controller
                 'numero_serial' => $serial_equipamento,
                 'cliente'=>  strtoupper(Helpers::getUserCompanyName(Auth::user()->id_cliente)),
                 'id_localidade'=> intval($id_localidade),
+                'status'=>"ABERTO",
                 'data_criacao'=> date('Y-m-d H:i:s'),
                 'users_id'=>Auth::user()->id,
                 'users_name'=>Auth::user()->name,
@@ -216,8 +218,7 @@ class Chamados extends Controller
         }
     }
 
-    //-----lista chamados
-
+    //-----lista chamados--
     public function getChamados(Request $request)
     {
         $model = new ChamadosModel();
@@ -476,11 +477,7 @@ class Chamados extends Controller
     public function getDashboardChamados(Request $request)
     {
         
-        $dentro=001;
-        $fora =00;
-        $target =3;
-        $percent = 0;
-        return view('dashboard_chamados')->with('dentro',$dentro)->with('fora',$fora)->with('target',$target)->with('percent',$percent);
+       //@deprecated moved to dashcontroller
     }
 
     //rating da chamada
