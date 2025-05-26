@@ -6,6 +6,8 @@ use App\Models\ClientesModel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+date_default_timezone_set("America/Sao_Paulo");
+setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
 
 class Helpers
 {
@@ -69,7 +71,7 @@ class Helpers
     }
 
 
-    public static function getDatesFromRange($start, $end, $format = 'M-Y')
+    public static function getDatesFromRange($start, $end, $format = 'd-M-y')
     {
 
         // Declare an empty array
@@ -91,6 +93,17 @@ class Helpers
         // Return the array elements
         return $array;
 
+    }
+
+
+
+    public static function getMounths()
+    {
+        $monthSet = array_map(
+                fn (int $m): string => (\DateTime::createFromFormat('m-d', "$m-1")->format('F')),
+                range(1, 12),
+            );
+        return $monthSet;    
     }
 
 
@@ -302,5 +315,38 @@ class Helpers
             return 'Printer';
         }
      }
+
+    public static function  search(array $array,string $key, string $value) {
+        //array_search('06-May-25', array_column($aberto, 'date')) 
+        return  array_search($value, array_column($array, $key));
+    }
+
+
+     public static  function telefone($n)
+    {
+        $tam = strlen(preg_replace("/[^0-9]/", "", $n));
+        
+        if ($tam == 13) {
+            // COM CÓDIGO DE ÁREA NACIONAL E DO PAIS e 9 dígitos
+            return "+".substr($n, 0, $tam-11)." (".substr($n, $tam-11, 2).") ".substr($n, $tam-9, 5)."-".substr($n, -4);
+        }
+        if ($tam == 12) {
+            // COM CÓDIGO DE ÁREA NACIONAL E DO PAIS
+            return "+".substr($n, 0, $tam-10)." (".substr($n, $tam-10, 2).") ".substr($n, $tam-8, 4)."-".substr($n, -4);
+        }
+        if ($tam == 11) {
+            // COM CÓDIGO DE ÁREA NACIONAL e 9 dígitos
+            return " (".substr($n, 0, 2).") ".substr($n, 2, 5)."-".substr($n, 7, 11);
+        }
+        if ($tam == 10) {
+            // COM CÓDIGO DE ÁREA NACIONAL
+            return " (".substr($n, 0, 2).") ".substr($n, 2, 4)."-".substr($n, 6, 10);
+        }
+        if ($tam <= 9) {
+            // SEM CÓDIGO DE ÁREA
+            return substr($n, 0, $tam-4)."-".substr($n, -4);
+        }
+}
+  
 
 }

@@ -46,10 +46,10 @@ class graphController extends Controller
     }
 
 
-   public function getChamadosGraph($idCliente, $periodo_inicio='09-23-24', $periodo_fim= '10-22-24', $json = false)
+   public function getChamadosGraph($id_cliente, $periodo_inicio='09-23-24', $periodo_fim= '10-22-24', $json = false)
    {
        $model = new graphModel();
-       $data = $model->getDataChamados($idCliente, $periodo_inicio, $periodo_fim);
+       $data = $model->getDataChamados($id_cliente, $periodo_inicio, $periodo_fim);
        $dentro =[];
        $fora = [];
        $dataset = [];

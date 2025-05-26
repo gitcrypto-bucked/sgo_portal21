@@ -91,7 +91,7 @@ class ChamadosModel extends Model
     public function getTotalAbertos($id_cliente)
     {
         $SQL =" SELECT COUNT(a.status) as abertos FROM sgo_chamado as a
-                JOIN sgo_cliente as c ON a.cliente = c.nome_cliente
+                JOIN sgo_cliente as c ON a.cliente LIKE c.nome_cliente
                 WHERE c.id_cliente=".$id_cliente." AND a.status='ABERTO' AND a.data_criacao between (CURDATE() - INTERVAL 1 MONTH) and CURDATE() ";
         return DB::select($SQL);
     }
@@ -100,7 +100,7 @@ class ChamadosModel extends Model
     public function getTotalFechados($id_cliente)
     {
         $SQL =" SELECT COUNT(a.status) as fechados FROM sgo_chamado as a
-        JOIN sgo_cliente as c ON a.cliente = c.nome_cliente
+        JOIN sgo_cliente as c ON a.cliente LIKE c.nome_cliente
         WHERE c.id_cliente=".$id_cliente." AND a.status='FECHADO' AND a.data_criacao between (CURDATE() - INTERVAL 1 MONTH) and CURDATE() ";
         return DB::select($SQL);
     }

@@ -46,7 +46,7 @@ class SearchModel extends Model
         //     LEFT JOIN suprimentos s ON s.numero_serie_impressora=e.serial
         //      WHERE l.localidade='".$localidade."' AND  e.modelo LIKE '".$model."' ORDER BY COALESCE(e.imagem,'') DESC ");
 
-        $SQL = 'SELECT e.*, l.nome_localidade, l.id_localidade, s.* FROM sgo_equipamento as e
+        $SQL = 'SELECT e.*, l.nome_localidade, l.id_localidade, s.*,e.id_equipamento FROM sgo_equipamento as e
                            JOIN sgo_localidade as l ON l.id_localidade = e.id_localidade 
                            LEFT JOIN sgo_suprimento as s ON s.id_equipamento = e.id_equipamento
                            WHERE l.id_localidade ='.$id_localidade.' AND e.serial_equipamento LIKE "'.$modelo.'" ORDER BY COALESCE(e.imagem_equipamento,"") DESC';

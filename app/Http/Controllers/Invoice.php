@@ -17,12 +17,12 @@ class Invoice extends Controller
 
     public function uploadInvoice(Request $request)
     {
-        if ($request->file('ffile')->isValid())
+        if ($request->file('ffile')->getClientOriginalExtension()==="csv" )
         {
             $data = null;
             $file = $request->file('ffile');
             $fileExtension = $file->getClientOriginalExtension();
-            if(str_contains($file->getClientOriginalName(),'faturamento')!=true)
+            if(str_contains(strtolower($file->getClientOriginalName()),'faturamento')!=true)
             {
                 return redirect('/invoice-upload')->with('error','Arquivo invalido');
             }
@@ -44,7 +44,10 @@ class Invoice extends Controller
 
             }
         }
-        return view('invoice-upload')->with('error','Arquivo invalido');
+        else
+        {
+            return view('invoice-upload')->with('error','Arquivo invalido');
+        }
 
     }
 
@@ -52,8 +55,7 @@ class Invoice extends Controller
     public function getFaturamento(Request $request)
     {
         $model = new InvoiceModel();
-        #$invoice = $model->select(Auth::user()->cliente);
-        $invoice = [];
+        $invoice = $model->select(Auth::user()->id_cliente);
         return view('invoice')->with('invoice',$invoice);
     }
 
@@ -61,11 +63,13 @@ class Invoice extends Controller
     {
         $model = new InvoiceModel();
 
-        $periodo_inicio = base64_decode( $request->input('periodo_inicio'));
-        $periodo_fim = base64_decode( $request->input('periodo_fim'));
+        $periodo_inicio = base64_decode( $request->input('periodo_cobranca_inicio'));
+        $periodo_fim = base64_decode( $request->input('periodo_cobranca_fim'));
         $total = base64_decode( $request->input('total'));
+
         $model = new InvoiceModel();
-        $invoices = $model->getDetalhes(Auth::user()->cliente,$periodo_inicio,$periodo_fim,$total);
+
+        $invoices = $model->getDetalhes(Auth::user()->id_cliente,$periodo_inicio,$periodo_fim,$total);
         return view('invoice_details')->with('invoice',$invoices)->with('periodo_inicio',$periodo_inicio)->with('periodo_fim',$periodo_fim)->with('total',$total);
     }
 
@@ -78,6 +82,29 @@ class Invoice extends Controller
         return view('dashboard_invoice');
     }
 
+
+    public function getFaturamentoDetalhesEquipamento(Request $request)
+    {
+
+        $id_equipamento = $request->id_equipamento;
+        
+        $model = new InvoiceModel();
+
+        $cobrado = $model->getTotalCobrado($id_equipamento);
+      
+
+        $invoices = $model->getDetalhesEquipamento($id_equipamento);
+        $invoices = json_decode($invoices,true);
+        if(empty($invoices) )
+        {
+            return json_encode(['st'=>300,'msg'=>'Não foram encontrados dados para este equipamento']);
+        }
+        else
+        {
+            return json_encode(['st'=>200, 'data'=>$invoices,'periodo_inicio'=>date('d/m/Y',strtotime($invoices[0]['periodo_cobranca_inicio'])), 'periodo_fim'=>date('d/m/Y',strtotime($invoices[0]['periodo_cobranca_fim'])),'total'=>$cobrado ]);
+        }
+       
+    }
 
 
 
