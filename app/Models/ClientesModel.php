@@ -108,7 +108,7 @@ class ClientesModel extends Model
 
         return DB::table('sgo_cliente')->select(DB::raw(' users.* '))
                ->join('users', 'users.id_cliente','=','sgo_cliente.id_cliente')
-               ->where('sgo_cliente.nome_cliente','=',$cliente)
+               ->where('sgo_cliente.id_cliente','=',$cliente)
                ->groupByRaw('sgo_cliente.id_cliente, users.id')
                ->paginate(config("pagination.CLIENTS"));
     }

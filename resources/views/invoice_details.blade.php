@@ -101,7 +101,7 @@
         @else
         <div class=" container-xxl mt-2 " style="padding-right:  0px !important; padding-left: 0px!important">
            <div class="col">
-               <p class="initialism_alt float-start">Outsourcing {!! date( "d/m/Y", strtotime(str_replace('-','/',$periodo_inicio))).' até '.date( "d/m/Y", strtotime(str_replace('-','/',$periodo_fim))); !!} </p>
+               <p class="initialism_alt float-start">Periodo de cobrança: {!! date( "d/m/Y", strtotime(str_replace('-','/',$periodo_inicio))).' - '.date( "d/m/Y", strtotime(str_replace('-','/',$periodo_fim))); !!} </p>
            </div>
            <div class="col">
                <p class="initialism_alt float-end">Saldo: {!!number_format($total,2,",",".") !!}</p>
@@ -128,45 +128,43 @@
         <div class="row">
             <table class="table_list">
                 @for($i=0; $i<sizeof($invoice); $i++)
-                    <tr class="card my-2">
-                        <td class="card-header" >
-                            <div class="float-container">
-                                <div class="float-child_invoice">
-                                    <div class="text-secondary">Localidade</div>
-                                    <div class="green"><abbr title="HyperText Markup Language" class="initialism">{!! strtoupper($invoice[$i]->nome_localidade) !!}</abbr></div>
-                                </div>
-
-                                <div class="float-child_invoice_serial">
-                                    <div class="text-secondary">Serial</div>
-                                    <div class="green"><abbr title="HyperText Markup Language" class="initialism">{!! strtoupper($invoice[$i]->serial_equipamento) !!}</abbr></div>
-                                </div>
-
-                                <div class="float-child_invoice_details">
-                                    <div class="text-secondary">Login</div>
-                                    <div class="green"><abbr title="HyperText Markup Language" class="initialism">{!!  $invoice[$i]->login_faturamento !!}</abbr></div>
-
-                                </div>
-
-                                <div class="float-child_invoice_servico">
-                                    <div class="text-secondary">Grupo de Serviço</div>
-                                    <div class="green"><abbr title="HyperText Markup Language" class="initialism">{!! $invoice[$i]->grupo_descricao_servico_faturamento !!}</abbr></div>
-                                </div>
-
-                                <div class="float-child_invoice_cdc">
-                                    <div class="text-secondary">C.D.C</div>
-                                    <div class="green"><abbr title="HyperText Markup Language" class="initialism">{!! $invoice[$i]->cdc_faturamento !!}</abbr></div>
-                                </div>
-
-                                <div class="float-child_invoice_periodo">
-                                    <div class="text-secondary">Vol. Página</div>
-                                    <div class="green"><abbr title="HyperText Markup Language" class="initialism">{!! (floatval($invoice[$i]->volume_faturamento)/100.00)*(floatval($invoice[$i]->cobrado_faturamento)) !!}</abbr></div>
-                                </div>
-
-                                <div class="float-child_invoice_details">
-                                    <div class="text-secondary">Val. Total</div>
-                                    <div class="green"><abbr title="HyperText Markup Language" class="initialism">{!!'R$ '.number_format($invoice[$i]->cobrado_faturamento,2,",","."); !!}</abbr></div>
-                                </div>
-
+                   <tr class="card my-2">
+                        <td class="w-100 d-flex justify-content-between card-header py-4 px-4" style=" box-shadow: horizontal-offset vertical-offset blur-radius spread-radius color inset;">
+                            <div>
+                                <div class="text-secondary">Localidade</div>
+                                <abbr title="HyperText Markup Language" class="initialism">{!! strtoupper($invoice[$i]->nome_localidade) !!}</abbr>
+                            </div>
+                            <div style="align-items: start !important">
+                                <div class="text-secondary">Serial</div>
+                                <abbr title="HyperText Markup Language" class="initialism">{!! strtoupper($invoice[$i]->serial_equipamento) !!}</abbr>
+                            </div>
+                            <div style="float: right !important">
+                                <div class="text-secondary">Login</div>
+                                <abbr title="HyperText Markup Language" class="initialism">{!!  $invoice[$i]->login_faturamento !!}</abbr>
+                            </div>
+                            <div style="float: right !important">
+                                <div class="text-secondary">Grupo de Serviço</div>
+                                <abbr title="HyperText Markup Language" class="initialism">{!!  $invoice[$i]->grupo_descricao_servico_faturamento !!}</abbr>
+                            </div>
+                            <div style="float: right !important">
+                                <div class="text-secondary">C.D.C</div>
+                                <abbr title="HyperText Markup Language" class="initialism">{!!  $invoice[$i]->cdc_faturamento !!}</abbr>
+                            </div>
+                            <div style="float: right !important">
+                                <div class="text-secondary">Val. Cobrado</div>
+                                <abbr title="HyperText Markup Language" class="initialism">{!!  sprintf('%0.2f',(floatval($invoice[$i]->cobrado_faturamento))) !!}</abbr>
+                            </div>                            
+                            <div style="float: right !important">
+                                <div class="text-secondary">Qtd. Duplex</div>
+                                <abbr title="HyperText Markup Language" class="initialism">{!!   sprintf('%0.4f',(floatval($invoice[$i]->quantidade_duplex_faturamento))) !!}</abbr>
+                            </div>
+                            <div style="float: right !important">
+                                <div class="text-secondary">Val. Unitário</div>
+                                <abbr title="HyperText Markup Language" class="initialism">{!!  "R$ ".sprintf('%0.4f',(floatval($invoice[$i]->valor_unitario_faturamento))) !!}</abbr>
+                            </div>                       
+                            <div style="float: right !important">
+                                <div class="text-secondary">Val. Total</div>
+                                <abbr title="HyperText Markup Language" class="initialism">{!!  "R$ ".$invoice[$i]->valor_total_geral_faturamento !!}</abbr>
                             </div>
                         </td>
                     </tr>

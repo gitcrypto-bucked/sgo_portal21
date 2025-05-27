@@ -5,8 +5,8 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\graphController;
 use Illuminate\Http\Request;
-use App\Graph\GraphFaturamento;
-use App\Graph\GraphChamados;
+use App\graph\GraphFaturamento;
+use App\graph\GraphChamados;
 
 use \Helpers\Helpers;
 date_default_timezone_set("America/Sao_Paulo");

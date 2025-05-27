@@ -423,7 +423,7 @@
                                 </div>
                                 <div class="col-md-2 ml-2 "  style="margin-top: 2%">
                                     @if( $inventario[$i]->imagem_equipamento!=null ||  $inventario[$i]->imagem_equipamento!='')
-                                        <img src="{!! $inventario[$i]->imagem_equipamento !!}" class="img-fluid rounded-start pb-0 mt-2 py-2" alt="..." width="201" height="201">
+                                        <img src="{!! $inventario[$i]->imagem_equipamento !!}" class="img-fluid rounded-start pb-0 mt-2 py-2" alt="..." width="201" height="201" style="mix-blend-mode: multiply !important">
                                     @else
                                         <img src="{{ asset('img/no_image.png') }}" class="img-fluid rounded-start pb-0  mt-2 py-2" alt="..." width="201" height="201" style="opacity: 0.7 !important">
                                     @endif

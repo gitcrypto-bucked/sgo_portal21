@@ -47,7 +47,7 @@
     <div class="container-xxl mt-4 mobile ">
         <h2 class="content-title pageName">Gerenciar Usuarios do Cliente   </h2>
         <p class="pageText">Permite ativar e desativar usuarios cadastrados.</p>
-        <p  class=" pageName" >  Cliente: {!! @(ucfirst($cliente)) !!}</p>
+        <p  class=" pageName" >  Cliente: {!!ucwords(\Helpers\Helpers::getUserCompanyName($cliente)) !!}</p>
 
         <div class="row gx-5 gy-3 mt-3 ">
             <!-- News Block -->

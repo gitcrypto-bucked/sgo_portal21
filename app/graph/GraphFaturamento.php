@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Graph;
+namespace App\graph;
 use Illuminate\Support\Facades\DB;
 
 

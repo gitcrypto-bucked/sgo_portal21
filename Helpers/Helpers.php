@@ -346,7 +346,7 @@ class Helpers
             // SEM CÓDIGO DE ÁREA
             return substr($n, 0, $tam-4)."-".substr($n, -4);
         }
-}
-  
+    }
+
 
 }
