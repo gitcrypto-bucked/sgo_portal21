@@ -40,7 +40,7 @@ class InvoiceModel extends Model
 
         return  DB::table('sgo_faturamento  AS f')
                   ->selectRaw(
-                                'sum(f.valor_total_faturamento) AS cobrado,
+                                'sum(f.valor_total_geral_faturamento) AS cobrado,
                                  sum(f.valor_total_porcento_faturamento) AS total_percent,
                                  f.status_faturamento,
                                  DATE_FORMAT(f.periodo_cobranca_inicio, "%d/%m/%Y") as periodo_inicio_ ,
@@ -92,7 +92,7 @@ class InvoiceModel extends Model
                   ->selectRaw('sgo_faturamento.*, sgo_localidade.nome_localidade, sgo_equipamento.serial_equipamento')
                   ->join('sgo_localidade', 'sgo_faturamento.id_localidade', '=', 'sgo_localidade.id_localidade')  
                   ->join('sgo_equipamento','sgo_faturamento.id_equipamento','=','sgo_equipamento.id_equipamento')
-                  ->havingRaw('SUM(sgo_faturamento.valor_total_faturamento) <= '.$total)
+                  ->havingRaw('SUM(sgo_faturamento.valor_total_geral_faturamento) <= '.$total)
                   ->groupByRaw('sgo_faturamento.id_faturamento, sgo_faturamento.codigo_servico_faturamento, sgo_localidade.id_localidade')
                   ->where('sgo_localidade.id_cliente', '=', $id_cliente)
                   ->where('sgo_faturamento.periodo_cobranca_inicio', '=', $periodo_inicio)
